@@ -1,0 +1,73 @@
+body{
+    background-image: url(bg.jpg);
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: 1500px 620px;
+    text-align: center;
+    font-size: 22px;
+    color: White;
+}
+h1{
+    color: grey;
+    font-size: 60px;
+    font-family: cursive;
+}
+.form1{
+    background:rgba(0,0,0,0.6);
+    padding: 15px;
+    margin-top:0px;
+    width: 28%;
+    position: absolute;
+    left:35%;
+    border-radius: 15px;
+}
+input{
+    width: 330px;
+    height: 30px;
+    border-radius: 7px;
+    text-align: center;
+}
+input[type="text"]{
+    font-size: 18px;
+}
+
+input[type="submit"]{
+    font-size: 20px;
+    height: 40px;
+    background-color: #00FF7F;
+
+}
+
+input[type="submit"]:hover{
+    color:white;	
+    background-color: blue;	
+}
+select{
+    size:400px;
+    height: 30px;
+    width: 252px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+input[type="radio"]
+{
+    font-size: 14px;
+    size: 10px;
+    height:12px;
+}
+.error-message {
+    color: red;               /* Text color */
+    padding: 0px 0px;        /* Add padding */
+    margin-top: 0px;          /* Margin from the input field */
+         /* Rounded corners */
+}
+.error {
+    color: red;               /* Text color */
+    padding: 0px 0px;        /* Add padding */
+    margin-top: 20px;          /* Margin from the input field */
+         /* Rounded corners */
+}
+.styl{
+    margin: 20px auto;
+}

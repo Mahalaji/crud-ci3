@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Set the base directory
+    RewriteBase /CodeIgniter3/
+
+    # Redirect to prevent directory listings if no index is present
+    Options -Indexes
+
+    # Redirect all requests to index.php except for files and directories that actually exist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
