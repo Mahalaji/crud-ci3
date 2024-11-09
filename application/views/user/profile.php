@@ -15,7 +15,7 @@
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-    <link rel="stylesheet" href="<?php echo base_url('public/css/user-edit.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/css/profile.css'); ?>">
 </head>
 
 <body>
@@ -26,8 +26,8 @@
                     <img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp" height="50">
                 </div>
                 <ul>
-                    <li><a href="#" class="active"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="<?php echo base_url('profile'); ?>" class="active"><i class="fas fa-user"></i>Profile</a></li>
+                    <li><a href="<?php echo base_url('blog'); ?>"><i class="fas fa-blog"></i> Blog</a></li>
                     <li><a href="<?php echo base_url('user/userdata'); ?>"><i class="fas fa-users"></i> Users</a></li>
                 </ul>
             </nav>
@@ -43,19 +43,21 @@
                     <div class="dropdown-content">
                         <a href="#"><i class="fas fa-user"></i> Profile</a>
                         <a href="#"><i class='fas fa-lock'></i> Change Password</a>
-                        <a href="#"><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        <?php 
+                        if( $this->session->userdata('id')) { ?>
+                        <a href="<?php echo base_url('logout')?>"><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        <?php } ?>
                     </div>
                 </div>
             </header>
             <div class="header">
-                <h1>Update User Detail</h1>
+                <h1>User Detail</h1>
                 <div class="form1">
                     <form name="simple">
-
                         <div id="d">
                             <div>
                                 <label for="name">Name:</label><br>
-                                <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>"><br><br>
+                                <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>"readonly><br><br>
 
                                 <label for="email">Email:</label><br>
                                 <input type="text" id="email" name="email"

@@ -7,7 +7,7 @@
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-    <link rel="stylesheet" href="<?php echo base_url('public/css/user-data.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/css/blogrecycle.css'); ?>">
 </head>
 
 <body>
@@ -24,7 +24,6 @@
                 </ul>
             </nav>
         </aside>
-
         <main class="main-content">
             <header class="top-bar">
                 <div class="search-bar">
@@ -44,43 +43,38 @@
                 </div>
             </header>
 
-            <div class="header">
-                <h1 id="user">User List
-                    <form align="right" method="post">
-                        <a href="<?php echo base_url('userregister'); ?>" style="    padding: 3px;
-                                       background: grey;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid grey;">Add</a>
-                </h1>
-                <table>
-                    <tr>
+        <div class="info" style=" background: white;">
 
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>Password Change</th>
-                    </tr>
+            <div class="header"
+                style=" background: white;">
+                <div id="back">
+                    <h1>Blog Recycle List</h1>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Create Date</th>
+                            <th>Update Date</th>
+                            <th>Delete</th>
+                            
+                        </tr>
+                    <?php foreach ($blogrecycle as $u): ?>
+                        <tr>
+                            <td><?php echo $u['Name']; ?></td>
+                            <td><?php echo $u['Title']; ?></td>
+                            <td><?php echo $u['Description']; ?></td>
+                            <td><?php echo $u['Create_Date']; ?></td>
+                            <td><?php echo $u['Update_Date']; ?></td>
+                            <td><a href="<?php echo base_url('blogdelete/' . $u['id']); ?>"><i class='fas fa-trash' style='font-size:36px'></i></a></td>
 
-                    <?php foreach ($user as $u): ?>
-                    <tr>
-
-                        <td><?php echo $u['name']; ?></td>
-                        <td><?php echo $u['email']; ?></td>
-                        <td><a href="<?php echo base_url('usereditdata/' . $u['id']); ?>"><i class='fas fa-edit' style='font-size:24px'></i></a></td>
-
-                        <td><a href="<?php echo base_url('userdeletedata/' . $u['id']); ?>"><i class='fas fa-trash' style='font-size:36px'></i></a></td>
-                        <td><a href="<?php echo base_url('userpass/' . $u['id'] ); ?>"><i class='fas fa-lock' style='font-size:24px'></i></a></td>
-                    </tr>
-                    <?php endforeach; ?>
+                        </tr>
+                        <?php endforeach; ?>
                 </table>
                 <div class="pagination-links">
                     <?php echo $this->pagination->create_links(); ?>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
-</body>
-
-</html>
+</div>

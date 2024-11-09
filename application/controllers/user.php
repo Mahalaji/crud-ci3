@@ -5,13 +5,20 @@ class User extends CI_Controller {
 
     public function __construct()
     {
+      
         parent::__construct();
         $this->load->model('user/Userdata');
         $this->load->library('pagination');
     }
-
+    private function check_login()
+    {
+        if (!$this->session->userdata('id')) {
+            redirect('user/login', 'refresh');
+        }
+    }
     public function index()
     {
+        $this->check_login();
         $this->load->view('user/register');
     }
 
@@ -91,11 +98,13 @@ class User extends CI_Controller {
 
     public function welcome()
     {
+        $this->check_login();
         $this->load->view('user/dashboard');
     }
 
     public function userdata()
     {
+        $this->check_login();
         $config = [
             'base_url' => base_url('user/userdata'),
             'per_page' => 5,
@@ -119,12 +128,14 @@ class User extends CI_Controller {
         $this->load->view('user/User-Data', $data);
     }
 	public function usereditdata($u) {
+        $this->check_login();
         $this->load->model('Userdata');
         
         $data['user'] = $this->Userdata->usereditdata($u);
         $this->load->view('user/user-edit', $data);
     }
     public function userupdatedata() {
+        $this->check_login();
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
     
         
@@ -194,12 +205,14 @@ class User extends CI_Controller {
     
 }
    public function userdeletedata($u){
+    $this->check_login();
     $this->load->model('Userdata');
     $this->Userdata->userdeletedata($u);
     redirect('user/userdata', 'refresh');
 
    } 
    public function userpass($u){
+    $this->check_login();
     $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
 
     $this->form_validation->set_rules('oldpassword', 'oldpassword', 'required');
@@ -229,7 +242,159 @@ class User extends CI_Controller {
         }
     }
    }
-    
+    public function profile(){
+    $this->check_login();
+     $id = $this->session->userdata('id');
+     $this->load->model('user/profile');
+     $data['user'] = $this->profile->fetchdata($id);
+     $this->load->view('user/profile', $data);
+        
+    }
+    public function logout(){
+        $this->check_login();
+        $this->session->unset_userdata('id');
+    redirect('user/login', 'refresh');
 
+    }
+    public function blog() {
+        $this->check_login();
+        $this->load->model('user/Blogdata');
+        $config1 = [
+            'base_url' => base_url('user/blog'),
+            'per_page' => 4,
+            'total_rows' => $this->Blogdata->numrows(),
+            'use_page_numbers' => TRUE,
+            'num_links' => 2,
+            'full_tag_open' => '<div class="pagination">',
+            'full_tag_close' => '</div>',
+            'first_link' => 'First',
+            'last_link' => 'Last',
+            'next_link' => '&raquo;',
+            'prev_link' => '&laquo;',
+        ];
+    
+        $this->pagination->initialize($config1);
+    
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+    
+        $data['blogs'] = $this->Blogdata->getblogdata($config1['per_page'], $page);
+    
+        $this->load->view('user/blog', $data);
+    }
+    public function blogadd(){
+        $this->check_login();
+        $this->load->view('user/blogadd');
+    }
+    
+    public function add(){
+        $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    
+        
+        $this->form_validation->set_rules('Name', 'Name', 'required');
+        $this->form_validation->set_rules('Title', 'Title', 'required');
+        // $this->form_validation->set_rules('Description', 'Description', 'required');
+        // $this->form_validation->set_rules('Create Date', 'Create Date', 'required');
+        // $this->form_validation->set_rules('Update Date', 'Update Date', 'required');
+        
+        $data['Name'] = $this->input->post('Name');
+        $data['Title'] = $this->input->post('Title');
+        $data['Description'] = $this->input->post('Description');
+        $data['Create_Date'] = $this->input->post('Create_Date');
+        $data['Update_Date'] = $this->input->post('Update_Date');
+        // var_dump($data); die;
+        
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('user/blogadd');
+           
+            
+        } else {
+            $this->load->model('user/Blogdata');
+            $this->Blogdata->getdata($data);
+            redirect('user/blog', 'refresh');
+
+        }
+    }
+    public function blogrecycle(){
+    $this->check_login();
+        $this->load->model('user/Blogdata');
+        $config2 = [
+            'base_url' => base_url('user/blogrecycle'),
+            'per_page' => 4,
+            'total_rows' => $this->Blogdata->countrows(),
+            'use_page_numbers' => TRUE,
+            'num_links' => 2,
+            'full_tag_open' => '<div class="pagination">',
+            'full_tag_close' => '</div>',
+            'first_link' => 'First',
+            'last_link' => 'Last',
+            'next_link' => '&raquo;',
+            'prev_link' => '&laquo;',
+        ];
+    
+        $this->pagination->initialize($config2);
+    
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+    
+        $data['blogrecycle'] = $this->Blogdata->getblogrecycledata($config2['per_page'], $page);
+    
+        $this->load->view('user/blogrecycle', $data);
+    }
+    public function blogrecycledata($u){
+    $this->check_login();
+        $this->load->model('user/Blogdata'); 
+        $result = $this->Blogdata->blogrecycledata($u);
+        
+        if ($result) {
+            redirect('user/blog', 'refresh');
+
+        } else {
+            echo "No record was updated. ";
+        }
+    }
+    public function blogdelete($u){
+    $this->check_login();
+        $this->load->model('user/Blogdata');
+    $this->Blogdata->blogdelete($u);
+    redirect('user/blogrecycle', 'refresh'); 
+    }
+    public function blogeditdata($u){
+    $this->check_login();
+        $this->load->model('user/Blogdata');
+        $data['user'] = $this->Blogdata->blogeditdata($u);
+        $this->load->view('user/blogedit', $data);
+    }
+    public function edit(){
+    $this->check_login();
+        $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+
+        $this->form_validation->set_rules('Name', 'Name', 'required');
+        $this->form_validation->set_rules('Title', 'Title', 'required');
+
+        $data['Name'] = $this->input->post('Name');
+        $data['Title'] = $this->input->post('Title');
+        $data['Description'] = $this->input->post('Description');
+        $data['Create_Date'] = $this->input->post('Create_Date');
+        $data['Update_Date'] = $this->input->post('Update_Date');
+        $data['id'] = $this->input->post('id');
+         
+        $u=$data['id'];
+        if ($this->form_validation->run() == FALSE) {
+
+            $this->load->model('user/Blogdata');
+        
+            $data['user'] = $this->Blogdata->blogeditdata($u);
+
+            $this->load->view('user/blogedit',$data);
+            
+        } else {
+    
+         $this->load->model('user/Blogdata');
+            $this->Blogdata->edit($u, $data);
+            redirect('user/blog', 'refresh');
+    
+            
+        }
+    }
 }
 ?>

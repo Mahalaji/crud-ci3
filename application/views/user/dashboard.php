@@ -22,8 +22,8 @@
                 <div id="img"><img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp"
                         height="50"></div>
                 <ul>
-                    <li><a href="#" class="active"><i class="fas fa-user"></i>Profile</a></li>
-                    <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+                    <li><a href="<?php echo base_url('profile'); ?>" class="active"><i class="fas fa-user"></i>Profile</a></li>
+                    <li><a href="<?php echo base_url('blog'); ?>"><i class="fas fa-blog"></i> Blog</a></li>
                     <li><a href="<?php echo base_url('userdata')?>"><i class="fas fa-users"></i> Users</a></li>
 
                 </ul>
@@ -40,7 +40,10 @@
                     <div class="dropdown-content">
                         <a href="#"><i class="fas fa-user"></i> profile</a>
                         <a href="#"><i class='fas fa-lock'></i> Change Password</a>
-                        <a href="#"><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        <?php 
+                        if( $this->session->userdata('id')) { ?>
+                        <a href="<?php echo base_url('logout')?>"><i class='fas fa-sign-out-alt'></i> Logout</a>
+                        <?php } ?>
                     </div>
                 </div>
 

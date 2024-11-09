@@ -61,6 +61,19 @@ $route['userdeletedata/(:num)']='user/userdeletedata/$1';
 $route['userregister']= 'user/insert_data';
 $route['userpass/(:num)']='user/userpass/$1';
 $route['profile']= 'user/profile';
+$route['logout']= 'user/logout';
+$route['blog']= 'user/blog';
+$route['blogadd']= 'user/blogadd';
+$route['add']= 'user/add';
+$route['blogrecycle']= 'user/blogrecycle';
+$route['blogrecycledata/(:num)']= 'user/blogrecycledata/$1';
+$route['blogdelete/(:num)']= 'user/blogdelete/$1';
+$route['blogeditdata/(:num)']= 'user/blogeditdata/$1';
+$route['edit']= 'user/edit';
+$route['profile']= 'user/profile';
+
+
+
 
 
 
