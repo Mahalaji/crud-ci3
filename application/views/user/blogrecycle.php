@@ -18,7 +18,10 @@
                     <img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp" height="50">
                 </div>
                 <ul>
-                <li><a href="<?php echo base_url('profile'); ?>" class="active"><i class="fas fa-user"></i>Profile</a></li>
+
+                    <li><a href="<?php echo base_url('dashboard'); ?>" class="active"><i class="fa fa-home"></i>Home</a>
+                    </li>
+                    <li><a href="<?php echo base_url('profile'); ?>"><i class="fas fa-user"></i>Profile</a></li>
                     <li><a href="<?php echo base_url('blog'); ?>"><i class="fas fa-blog"></i> Blog</a></li>
                     <li><a href="<?php echo base_url('user/userdata'); ?>"><i class="fas fa-users"></i> Users</a></li>
                 </ul>
@@ -33,8 +36,8 @@
                 <div class="dropdown">
                     <button class="dropbtn">Account <i class='fas fa-angle-down'></i></button>
                     <div class="dropdown-content">
-                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#"><i class='fas fa-lock'></i> Change Password</a>
+                        <a href="<?php echo base_url('updateprofile')?>"><i class='fas fa-user'></i>Profile</a>
+                        <a href="<?php echo base_url('adminpass')?>"><i class="fas fa-lock"></i> Change Password</a>
                         <?php 
                         if( $this->session->userdata('id')) { ?>
                         <a href="<?php echo base_url('logout')?>"><i class='fas fa-sign-out-alt'></i> Logout</a>
@@ -42,39 +45,49 @@
                     </div>
                 </div>
             </header>
+            <div class="info" style=" background: white;">
 
-        <div class="info" style=" background: white;">
+                <div class="header" style=" background: white;">
+                    <div id="back">
+                        <h1>Blog Recycle List</h1>
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Create Date</th>
+                                <th>Update Date</th>
+                                <th>Delete</th>
+                                <th>Restore</th>
 
-            <div class="header"
-                style=" background: white;">
-                <div id="back">
-                    <h1>Blog Recycle List</h1>
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Create Date</th>
-                            <th>Update Date</th>
-                            <th>Delete</th>
-                            
-                        </tr>
-                    <?php foreach ($blogrecycle as $u): ?>
-                        <tr>
-                            <td><?php echo $u['Name']; ?></td>
-                            <td><?php echo $u['Title']; ?></td>
-                            <td><?php echo $u['Description']; ?></td>
-                            <td><?php echo $u['Create_Date']; ?></td>
-                            <td><?php echo $u['Update_Date']; ?></td>
-                            <td><a href="<?php echo base_url('blogdelete/' . $u['id']); ?>"><i class='fas fa-trash' style='font-size:36px'></i></a></td>
-
-                        </tr>
-                        <?php endforeach; ?>
-                </table>
-                <div class="pagination-links">
-                    <?php echo $this->pagination->create_links(); ?>
+                            </tr>
+                            <?php foreach ($blogrecycle as $u): ?>
+                            <tr>
+                                <td><?php echo $u['Name']; ?></td>
+                                <td>
+                                    <?php if (!empty($u['image'])): ?>
+                                    <img src="<?php echo base_url('uploads/images/' . $u['image']); ?>" alt="Blog Image"
+                                        height="50">
+                                    <?php else: ?>
+                                    <span>No Image</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo $u['Title']; ?></td>
+                                <td><?php echo $u['Description']; ?></td>
+                                <td><?php echo $u['Create_Date']; ?></td>
+                                <td><?php echo $u['Update_Date']; ?></td>
+                                <td><a href="<?php echo base_url('blogdelete/' . $u['id']); ?>"><i class='fas fa-trash'
+                                            style='font-size:36px'></i></a></td>
+                                <td><a href="<?php echo base_url('blogrestore/' . $u['id']); ?>"><i
+                                            class='fa fa-download' style='font-size:36px'></i></a></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </table>
+                        <div class="pagination-links">
+                            <?php echo $this->pagination->create_links(); ?>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
-</div>

@@ -229,7 +229,6 @@ class User extends CI_Controller {
     } else {
         
         $oldpassword = $data['oldpassword'];
-
         $this->load->model('user/Userdata');
         $Id = $this->Userdata->userpass($u,$oldpassword,$data);
 
@@ -286,35 +285,45 @@ class User extends CI_Controller {
         $this->load->view('user/blogadd');
     }
     
-    public function add(){
+    public function add() {
+    $this->check_login();
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
-    
-        
         $this->form_validation->set_rules('Name', 'Name', 'required');
         $this->form_validation->set_rules('Title', 'Title', 'required');
-        // $this->form_validation->set_rules('Description', 'Description', 'required');
-        // $this->form_validation->set_rules('Create Date', 'Create Date', 'required');
-        // $this->form_validation->set_rules('Update Date', 'Update Date', 'required');
         
         $data['Name'] = $this->input->post('Name');
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
         $data['Create_Date'] = $this->input->post('Create_Date');
         $data['Update_Date'] = $this->input->post('Update_Date');
-        // var_dump($data); die;
-        
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('user/blogadd');
-           
+       
+        if ($_FILES['image']['name']) {
+            $config['upload_path'] = './uploads/images/'; 
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';  
+            $config['max_size'] = 2048; 
+            $config['file_name'] = time() . '_' . $_FILES['image']['name'];  
             
+            $this->load->library('upload', $config);
+    
+            if (!$this->upload->do_upload('image')) {
+                $data['upload_error'] = $this->upload->display_errors();
+                $this->load->view('user/blogadd', $data);
+                return;  
+            } else {
+                $upload_data = $this->upload->data();
+                $data['image'] = $upload_data['file_name'];
+            }
+        }
+    
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('user/blogadd', $data);
         } else {
             $this->load->model('user/Blogdata');
             $this->Blogdata->getdata($data);
             redirect('user/blog', 'refresh');
-
         }
     }
+    
     public function blogrecycle(){
     $this->check_login();
         $this->load->model('user/Blogdata');
@@ -375,10 +384,28 @@ class User extends CI_Controller {
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
         $data['Create_Date'] = $this->input->post('Create_Date');
-        $data['Update_Date'] = $this->input->post('Update_Date');
+        $data['Update_Date'] = date('Y-m-d');
         $data['id'] = $this->input->post('id');
          
         $u=$data['id'];
+        if ($_FILES['image']['name']) {
+            $config['upload_path'] = './uploads/images/'; 
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';  
+            $config['max_size'] = 2048; 
+            $config['file_name'] = time() . '_' . $_FILES['image']['name'];  
+            
+            $this->load->library('upload', $config);
+    
+            if (!$this->upload->do_upload('image')) {
+                $data['upload_error'] = $this->upload->display_errors();
+                $this->load->view('user/blogedit', $data);
+                return;  
+            } else {
+                $upload_data = $this->upload->data();
+                $data['image'] = $upload_data['file_name'];
+            }
+        }
+    
         if ($this->form_validation->run() == FALSE) {
 
             $this->load->model('user/Blogdata');
@@ -395,6 +422,109 @@ class User extends CI_Controller {
     
             
         }
+    }
+    public function blogrestore($u){
+       $this->check_login();
+        $this->load->model('user/Blogdata');
+       $result= $this->Blogdata->blogrestore($u);
+      
+        if ($result) {
+            redirect('user/blogrecycle', 'refresh');
+
+        } else {
+            echo "No record was updated. ";
+        }
+    }
+    public function adminpass(){
+    $this->check_login();
+       $id=$this->session->userdata("id");
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+
+    $this->form_validation->set_rules('oldpassword', 'oldpassword', 'required');
+    $this->form_validation->set_rules('newpassword', 'newpassword', 'required');
+
+    $data = [
+        'oldpassword' => $this->input->post('oldpassword'),
+        'newpassword' => $this->input->post('newpassword'),
+
+    ];
+
+    if ($this->form_validation->run() == FALSE) {
+        $this->load->view('user/adminpass');
+    } else {
+        
+        $oldpassword = $data['oldpassword'];
+        $this->load->model('user/profile');
+        $Id = $this->profile->adminpass($id,$oldpassword,$data);
+        if ($Id) {
+            redirect('user/welcome', 'refresh');
+        } else {
+            $this->form_validation->set_error_delimiters('<div class="error">', '</div>','refresh');
+            $this->session->set_flashdata('error', 'Invalid Old password');
+            $this->load->view('user/adminpass');
+        }
+    }
+       
+    }
+    public function updateprofile(){
+    $this->check_login();
+        $id=$this->session->userdata('id');
+        $this->load->model('user/profile');
+        $data['user'] = $this->profile->updateprofile($id);
+        $this->load->view('user/updateprofile', $data);
+    }
+    public function updateadminprofile(){
+     $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+
+     $this->form_validation->set_rules('name', 'name', 'required');
+     $this->form_validation->set_rules('email', 'email', 'required');
+     $this->form_validation->set_rules('gender', 'gender', 'required');
+     $this->form_validation->set_rules('mobilenumber', 'mobilenumber', 'required');
+     $this->form_validation->set_rules('city', 'city', 'required');
+     $this->form_validation->set_rules('state', 'state', 'required');
+     $this->form_validation->set_rules('pincode', 'pincode', 'required');
+     $this->form_validation->set_rules('country', 'country', 'required');
+     $this->form_validation->set_rules('address', 'address', 'required');
+     
+     $data['name'] = $this->input->post('name');
+        $data['email'] = $this->input->post('email');
+        $data['gender'] = $this->input->post('gender');
+        $data['mobilenumber'] = $this->input->post('mobilenumber');
+        $data['city'] = $this->input->post('city');
+        $data['state'] = $this->input->post('state');
+        $data['pincode'] = $this->input->post('pincode');
+        $data['country'] = $this->input->post('country');
+        $data['address'] = $this->input->post('address');
+        $data['id'] = $this->input->post('id');
+      
+     $id=$data['id'];
+     if ($this->form_validation->run() == FALSE) {
+
+         $this->load->model('user/profile');
+     
+         $data['user'] = $this->profile->updateprofile($id);
+
+         $this->load->view('user/updateprofile',$data);
+         
+     } else {
+ 
+      $this->load->model('user/profile');
+         $this->profile->updateadminprofile($id, $data);
+         redirect('user/welcome', 'refresh');
+ 
+         
+     }
+
+    }
+    public function blogsite(){
+        $this->load->model('blogpost/Blogview');
+        $data['user']= $this->Blogview->blogsite();
+		$this->load->view('blogpost/blogview', $data);
+         
+        // $this->load->view('blogpost/blogview');
+    }
+    public function blogviewabout(){
+        $this->load->view('blogpost/about.php');
     }
 }
 ?>

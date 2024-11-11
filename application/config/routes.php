@@ -71,8 +71,13 @@ $route['blogdelete/(:num)']= 'user/blogdelete/$1';
 $route['blogeditdata/(:num)']= 'user/blogeditdata/$1';
 $route['edit']= 'user/edit';
 $route['profile']= 'user/profile';
-
-
+$route['dashboard']= 'user/welcome';
+$route['blogrestore/(:num)']= 'user/blogrestore/$1';
+$route['adminpass']= 'user/adminpass';
+$route['updateprofile']= 'user/updateprofile';
+$route['updateadminprofile']='user/updateadminprofile';
+$route['blogsite']= 'user/blogsite';
+$route['blogviewabout']='user/blogviewabout';
 
 
 

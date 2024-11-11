@@ -18,7 +18,8 @@
                     <img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp" height="50">
                 </div>
                 <ul>
-                <li><a href="<?php echo base_url('profile'); ?>" class="active"><i class="fas fa-user"></i>Profile</a></li>
+                <li><a href="<?php echo base_url('dashboard'); ?>" class="active"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="<?php echo base_url('profile'); ?>"><i class="fas fa-user"></i>Profile</a></li>
                     <li><a href="<?php echo base_url('blog'); ?>"><i class="fas fa-blog"></i> Blog</a></li>
                     <li><a href="<?php echo base_url('user/userdata'); ?>"><i class="fas fa-users"></i> Users</a></li>
                 </ul>
@@ -34,8 +35,8 @@
                 <div class="dropdown">
                     <button class="dropbtn">Account <i class='fas fa-angle-down'></i></button>
                     <div class="dropdown-content">
-                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#"><i class='fas fa-lock'></i> Change Password</a>
+                    <a href="<?php echo base_url('updateprofile')?>"><i class='fas fa-user'></i>Profile</a>
+                    <a href="<?php echo base_url('adminpass')?>"><i class="fas fa-lock"></i> Change Password</a>
                         <?php 
                         if( $this->session->userdata('id')) { ?>
                         <a href="<?php echo base_url('logout')?>"><i class='fas fa-sign-out-alt'></i> Logout</a>
