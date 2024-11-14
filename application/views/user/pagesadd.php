@@ -1,50 +1,50 @@
 <?php include("side_and_header.php");?>
-<link rel="stylesheet" href="<?php echo base_url('public/css/blogadd.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('public/css/pagesadd.css') ?>">
 <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-            <h2 class="header"> Add-Blog</h2>
+            <h2 class="header"> Add-pages</h2>
             <div class="form1">
-                <form class="simple" method="post" action="<?php echo base_url('add')?>" enctype="multipart/form-data">
+                <form class="simple" method="post" action="<?php echo base_url('addpages')?>" enctype="multipart/form-data">
                     <div id="d">
                         <div>
-                            <div class="input-group">
-                                <label>Name</label>
-                                <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)">
-                                <div class="error-message"> <?= form_error('Name') ?></div>
-
-                            </div>
+                            
                             <div class="input-group">
                                 <label>Title</label><br>
                                 <input type="text" id="Title" name="Title">
                                 <div class="error-message"> <?= form_error('Title') ?></div>
 
 
-                            </div>
-                         
-
                         </div>
                         <div>
+                           
+                            
                             <div class="input-group">
-                                <label>Upload Image:</label><br>
-                                <input type="file" name="image" id="image" />
-                                <?php if (isset($upload_error)) { echo '<div class="error-message">' . $upload_error . '</div>'; } ?>
+                                <label>Mobile Number</label>
+                                <input type="text" id="number" name="number" required>
                             </div>
                             <div class="input-group">
-                                <label>Create Date</label>
-                                <input type="date" id="Create Date" name="Create_Date" required>
+                                <label>Email</label>
+                                <input type="text" id="email" name="email" required>
                             </div>
                             <div class="input-group">
-                                <label>Update Date</label>
-                                <input type="date" id="Update Date" name="Update_Date" required>
+                            <label >Gender:</label><br>
+                                <select id="gender" name="gender" >
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select><br><br>
+                                </div>
+                            <div class="input-group">
+                                <label>Date</label>
+                                <input type="date" id="Date" name="Date" required>
                             </div>
                             <div class="input-group">
                                 <label>Description</label>
-                                <textarea id="editor" name="Description">
+                                <textarea id="editor" name="description">
                      &lt;p&gt;Your massage .&lt;/p&gt;
                        </textarea>
                             </div>
 
                             <div class="submit">
-                                <button type="submit" class="btn" name="update">Add Blog</button>
+                                <button type="submit" class="btn" name="update">Add Pages</button>
                             </div>
                         </div>
 

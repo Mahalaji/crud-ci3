@@ -1,15 +1,15 @@
 <?php include("side_and_header.php");?>
-<link rel="stylesheet" href="<?php echo base_url('public/css/blogadd.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('public/css/newsedit.css') ?>">
 <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-            <h2 class="header"> Add-Blog</h2>
+            <h2 class="header"> Add-News</h2>
             <div class="form1">
-                <form class="simple" method="post" action="<?php echo base_url('add')?>" enctype="multipart/form-data">
+                <form class="simple" method="post" action="<?php echo base_url('addnews')?>" enctype="multipart/form-data">
                     <div id="d">
                         <div>
                             <div class="input-group">
-                                <label>Name</label>
-                                <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)">
-                                <div class="error-message"> <?= form_error('Name') ?></div>
+                                <label>Author_Name</label>
+                                <input type="text" id="Author_Name" name="Author_Name" onkeyup="lettersOnly(this)">
+                                <div class="error-message"> <?= form_error('Author_Name') ?></div>
 
                             </div>
                             <div class="input-group">
@@ -29,12 +29,16 @@
                                 <?php if (isset($upload_error)) { echo '<div class="error-message">' . $upload_error . '</div>'; } ?>
                             </div>
                             <div class="input-group">
-                                <label>Create Date</label>
-                                <input type="date" id="Create Date" name="Create_Date" required>
+                                <label>Date</label>
+                                <input type="date" id="Date" name="Date" required>
                             </div>
                             <div class="input-group">
-                                <label>Update Date</label>
-                                <input type="date" id="Update Date" name="Update_Date" required>
+                                <label>Mobile Number</label>
+                                <input type="text" id="Number" name="Number" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <input type="text" id="Email" name="Email" required>
                             </div>
                             <div class="input-group">
                                 <label>Description</label>
@@ -44,7 +48,7 @@
                             </div>
 
                             <div class="submit">
-                                <button type="submit" class="btn" name="update">Add Blog</button>
+                                <button type="submit" class="btn" name="update">Add News</button>
                             </div>
                         </div>
 

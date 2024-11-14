@@ -193,6 +193,7 @@ h2.header {
 }
 
 .input-group input,
+.input-group select,
 .input-wrapper textarea {
     width: 100%;
     padding: 12px;
@@ -300,6 +301,7 @@ h2.header {
     }
 
     .input-group input,
+    .input-group select,
     .input-wrapper textarea {
         padding: 10px;
         font-size: 14px;

@@ -76,8 +76,27 @@ $route['blogrestore/(:num)']= 'user/blogrestore/$1';
 $route['adminpass']= 'user/adminpass';
 $route['updateprofile']= 'user/updateprofile';
 $route['updateadminprofile']='user/updateadminprofile';
+$route['news']= 'user/news';
+$route['newsadd']= 'user/newsadd';
+$route['addnews']= 'user/addnews';
+$route['newseditdata/(:num)']= 'user/newseditdata/$1';
+$route['newsedit']= 'user/newsedit';
+$route['newsrecycledata/(:num)']= 'user/newsrecycledata/$1';
+$route['recyclenews']= 'user/recyclenews';
+$route['newsdelete/(:num)']='user/newsdelete/$1';
+$route['newsrestore/(:num)']= 'user/newsrestore/$1';
+$route['pages']='user/pages';
+$route['pagesadd']='user/pagesadd';
+$route['addpages']='user/addpages';
+$route['recyclepages']= 'user/recyclepages';
+$route['pagesrecycledata/(:num)']= 'user/pagesrecycledata/$1';
+$route['pageseditdata/(:num)'] ='user/pageseditdata/$1';
+$route['pagesedit'] ='user/pagesedit';
+$route['pagesdelete/(:num)'] = 'user/pagesdelete/$1';
+$route['pagesrestore/(:num)'] = 'user/pagesrestore/$1';
 $route['blogsite']= 'user/blogsite';
-$route['blogviewabout']='user/blogviewabout';
+$route['blogsshow'] = 'user/blogsshow';
+$route['newsshow']='user/newsshow';
 
 
 
