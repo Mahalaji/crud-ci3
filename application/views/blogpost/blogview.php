@@ -107,7 +107,7 @@
     }
 
     .post-image {
-        height: 250px;
+        height: 200px;
         background-size: cover;
         background-position: center;
         border-top-left-radius: 16px;
@@ -167,7 +167,12 @@
         background-color: #2980b9;
         transform: translateY(-2px);
     }
-
+    .feature{
+        height: 472px;
+    }
+a{
+    text-decoration: none;
+}
     footer {
         background-color: #34495e;
         color: #fff;
@@ -182,7 +187,7 @@
     #featured-post .featured {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 3rem;
+        /* gap: 3rem; */
         margin-bottom: 3rem;
     }
 
@@ -282,7 +287,7 @@
 <body>
     <header>
         <nav>
-            <h1>Attractive Blog</h1>
+            <h1>Mahala ji</h1>
             <ul>
                 <li><a href="<?php echo base_url('blogsite'); ?>">Home</a></li>
                 <li><a href="<?php echo base_url('blogsshow'); ?>">Blogs</a></li>
@@ -310,17 +315,18 @@
             <?php
                 foreach($user as $row):
                 ?>
-                <article>
+                <article class="feature">
                   
                 <div class="post-image" >
-                    <img src="uploads/images/<?php echo $row['image'] ?>"  style="    width: -webkit-fill-available;
+                    <img src="uploads/images/<?php echo $row['image'] ?>"  style="    
     height: 14rem;"/>
                     </div>
                     <div class="post-content">
-                     <h3><?php echo $row['Title']; ?></h3>
-                     <p><?php echo $row['Description']; ?></p>
-                     <p> Create Date: <?= $row['Create_Date']; ?></p>
-                     <p> Update Date: <?= $row['Update_Date']; ?></p>
+                    <a href="<?php echo base_url('particularshow/') . $row['id'];?>">
+                        <h3><?php  echo $row['Title'];  ?></h3>
+                        <p><?php echo $row['Description']; ?></p>
+                        </a>
+                     
                 </article>
                 <?php endforeach; ?>
               
@@ -332,16 +338,17 @@
             <?php
                 foreach($newsview as $news):
                 ?>
-                <article>
+                <article class="feature">
                   
                 <div class="post-image" >
-                    <img src="uploads/news_images/<?php echo $news['Image'] ?>"  style="    width: -webkit-fill-available;
+                    <img src="uploads/news_images/<?php echo $news['Image'] ?>"  style="    
     height: 14rem;"/>
                     </div>
                     <div class="post-content">
-                     <h3><?php echo $news['Title']; ?></h3>
-                     <p><?php echo $news['Description']; ?></p>
-                     <p>Date: <?= $news['Date']; ?></p>
+                    <a href="<?php echo base_url('particularnews/') . $news['id'];?>">
+                        <h3><?php  echo $news['Title'];  ?></h3>
+                        <p><?php echo $news['Description']; ?></p>
+                        </a>
                 </article>
                 <?php endforeach; ?>
               

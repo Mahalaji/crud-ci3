@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav>
-            <h1>Attractive Blog</h1>
+            <h1>Mahala ji</h1>
             <ul>
               <li><a href="<?php echo base_url('blogsite'); ?>">Home</a></li>
                 <li><a href="<?php echo base_url('blogsshow'); ?>">Blogs</a></li>
@@ -40,10 +40,12 @@
     height: 14rem;"/>
                     </div>
                     <div class="post-content">
-                     <h3><?php echo $row['Title']; ?></h3>
-                     <p><?php echo $row['Description']; ?></p>
-                     <p> Create Date: <?= $row['Create_Date']; ?></p>
-                     <p> Update Date: <?= $row['Update_Date']; ?></p>
+                        <a href="<?php echo base_url('particularshow/') . $row['id'];?>">
+                        <h3><?php  echo $row['Title'];  ?></h3>
+                        <p><?php echo $row['Description']; ?></p>
+                        </a>
+                     
+                 
                      
                     
                 </article>
@@ -67,7 +69,7 @@
                 e.preventDefault();
                 $(".featured:hidden").slice(0, 3).slideDown();
                 if($(".featured:hidden").length == 0) {
-                $("#loadMore").text("").addClass("");
+                $("#loadMore").hide();
                 }
             });
             

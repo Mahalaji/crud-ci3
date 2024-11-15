@@ -526,7 +526,7 @@ class User extends CI_Controller {
         $this->check_login();
         $config = [
             'base_url' => base_url('user/news'),
-            'per_page' => 4,
+            'per_page' => 3,
             'total_rows' => $this->news->num_rows(),
             'use_page_numbers' => TRUE,
             'num_links' => 2,
@@ -883,6 +883,18 @@ public function blogsshow() {
         $this->load->model('blogpost/Blogview');
     $data['newsview'] = $this->Blogview->newsshow();
     $this->load->view('blogpost/newsshow', $data);
+    }
+    public function particularshow($row) {
+        $this->load->model('blogpost/Blogview');
+        $data['user'] = $this->Blogview->particularshow($row);  
+        $data['sideblog'] = $this->Blogview->sideblog();  
+    $this->load->view('blogpost/particularblog', $data);
+    }
+    public function particularnews($news) {
+        $this->load->model('blogpost/Blogview');
+        $data['news'] = $this->Blogview->particularnews($news); 
+        $data['sidenews'] = $this->Blogview->sidenews();  
+    $this->load->view('blogpost/particularnews', $data);
     }
 }
 ?>

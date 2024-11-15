@@ -97,6 +97,8 @@ $route['pagesrestore/(:num)'] = 'user/pagesrestore/$1';
 $route['blogsite']= 'user/blogsite';
 $route['blogsshow'] = 'user/blogsshow';
 $route['newsshow']='user/newsshow';
+$route['particularshow/(:num)'] = 'user/particularshow/$1';
+$route['particularnews/(:num)'] = 'user/particularnews/$1';
 
 
 

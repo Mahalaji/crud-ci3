@@ -173,7 +173,9 @@ footer {
     gap: 3rem;
     margin-bottom: 3rem;
 }
-
+a{
+    text-decoration: none;
+}
 #featured-post .post-image {
     min-height: 350px;
     border-radius: 16px;
@@ -192,7 +194,7 @@ footer {
     margin-bottom: 2rem;
 }
 .featured {
-    height: 550px;
+    height: 523px;
  
     display: none;
     
@@ -215,6 +217,10 @@ footer {
     border: 1px solid blue;
     text-decoration: none;
   }
+  #loadMore:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     #loadMore {
