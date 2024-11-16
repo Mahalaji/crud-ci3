@@ -37,6 +37,7 @@ class Userdata extends CI_Model {
         $this->db->where('id', $u);
         return $this->db->update('user_detail', $updatedata); 
     }
+    
     public function userdeletedata($u){
         $this->db->where('id', $u);
         return $this->db->delete('user_detail');

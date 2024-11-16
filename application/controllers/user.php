@@ -101,7 +101,15 @@ class User extends CI_Controller {
     public function welcome()
     {
         $this->check_login();
-        $this->load->view('user/dashboard');
+        $this->load->model('user/Login');
+      $id=$this->session->userdata('id');
+        $data['user'] = $this->Login->user();     
+        $data['blog'] = $this->Login->blog();        
+        $data['news'] = $this->Login->news();  
+        // print_r( $data['news'] ); die;
+
+        $data['username'] = $this->Login->username($id);   
+        $this->load->view('user/dashboard',$data);
     }
 
     public function userdata()
@@ -123,17 +131,41 @@ class User extends CI_Controller {
 
         $this->pagination->initialize($config);
 
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data['user'] = $this->Userdata->getuserdata($config['per_page'], $page);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+        $offset = ($page - 1) * $config['per_page'];
+        $data['user'] = $this->Userdata->getuserdata($config['per_page'], $offset);
 
         $this->load->view('user/User-Data', $data);
     }
-	public function usereditdata($u) {
+	// public function usereditdata($u) {
+    //     $this->check_login();
+    //     $this->load->model('Userdata');
+        
+    //     $data['user'] = $this->Userdata->usereditdata($u);
+    //     $this->load->view('user/user-edit', $data);
+    // }
+    public function usereditdata($u) {
         $this->check_login();
         $this->load->model('Userdata');
-        
+    
+        if ($this->input->post('submit')) {
+            // Get updated user data from the form
+            $updatedData = array(
+                'name' => $this->input->post('name'), // Example field
+                // Other fields to update
+            );
+    
+            // Update the user data in the database
+            $this->Userdata->update_user_data($u, $updatedData);
+    
+            // After the update, pass the updated user ID and reload the dashboard
+            redirect('user/dashboard'); // Redirect to the dashboard after the update
+        }
+    
+        // Fetch existing data for the user to pre-fill the form
         $data['user'] = $this->Userdata->usereditdata($u);
+        
+        // Load the user edit page
         $this->load->view('user/user-edit', $data);
     }
     public function userupdatedata() {
@@ -260,6 +292,8 @@ class User extends CI_Controller {
     public function blog() {
         $this->check_login();
         $this->load->model('user/Blogdata');
+        
+        // Pagination config
         $config1 = [
             'base_url' => base_url('user/blog'),
             'per_page' => 4,
@@ -276,12 +310,16 @@ class User extends CI_Controller {
     
         $this->pagination->initialize($config1);
     
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; // Default to page 1 if not set
     
-        $data['blogs'] = $this->Blogdata->getblogdata($config1['per_page'], $page);
+        $start = ($page - 1) * $config1['per_page'];
     
+        $data['blogs'] = $this->Blogdata->getblogdata($config1['per_page'], $start);
+    
+        // Load the view
         $this->load->view('user/blog', $data);
     }
+    
     public function blogadd(){
         $this->check_login();
         $this->load->view('user/blogadd');
@@ -292,12 +330,19 @@ class User extends CI_Controller {
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
         $this->form_validation->set_rules('Name', 'Name', 'required');
         $this->form_validation->set_rules('Title', 'Title', 'required');
+        $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+        $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+        $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
         
         $data['Name'] = $this->input->post('Name');
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
-        $data['Create_Date'] = $this->input->post('Create_Date');
-        $data['Update_Date'] = $this->input->post('Update_Date');
+        $data['Create_Date'] = date('Y-m-d');
+        $data['post_Date'] = $this->input->post('post_Date');
+        $data['seo_robat'] = $this->input->post('seo_robat');
+        $data['meta_keyword'] = $this->input->post('meta_keyword');
+        $data['meta_description'] = $this->input->post('meta_description');
+        $data['seo_title'] = $this->input->post('seo_title');
        
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/images/'; 
@@ -325,10 +370,10 @@ class User extends CI_Controller {
             redirect('user/blog', 'refresh');
         }
     }
-    
-    public function blogrecycle(){
-    $this->check_login();
+    public function blogrecycle() {
+        $this->check_login();
         $this->load->model('user/Blogdata');
+    
         $config2 = [
             'base_url' => base_url('user/blogrecycle'),
             'per_page' => 4,
@@ -345,12 +390,15 @@ class User extends CI_Controller {
     
         $this->pagination->initialize($config2);
     
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $page = ($this->uri->segment(3)) ? (int)$this->uri->segment(3) : 1;  
+        
+        $start = ($page - 1) * $config2['per_page'];
     
-        $data['blogrecycle'] = $this->Blogdata->getblogrecycledata($config2['per_page'], $page);
+        $data['blogrecycle'] = $this->Blogdata->getblogrecycledata($config2['per_page'], $start);
     
         $this->load->view('user/blogrecycle', $data);
     }
+    
     public function blogrecycledata($u){
     $this->check_login();
         $this->load->model('user/Blogdata'); 
@@ -387,7 +435,13 @@ class User extends CI_Controller {
         $data['Description'] = $this->input->post('Description');
         $data['Create_Date'] = $this->input->post('Create_Date');
         $data['Update_Date'] = date('Y-m-d');
+        $data['post_Date'] = $this->input->post('post_Date');
+        $data['meta_description'] = $this->input->post('meta_description');
+        $data['seo_robat'] = $this->input->post('seo_robat');
+        $data['meta_keyword'] = $this->input->post('meta_keyword');
+        $data['seo_title'] = $this->input->post('seo_title');
         $data['id'] = $this->input->post('id');
+
          
         $u=$data['id'];
         if ($_FILES['image']['name']) {
@@ -524,12 +578,13 @@ class User extends CI_Controller {
     public function News()
     {
         $this->check_login();
+    
         $config = [
-            'base_url' => base_url('user/news'),
-            'per_page' => 3,
-            'total_rows' => $this->news->num_rows(),
-            'use_page_numbers' => TRUE,
-            'num_links' => 2,
+            'base_url' => base_url('user/news'),  
+            'per_page' => 3,                      
+            'total_rows' => $this->news->num_rows(),  
+            'use_page_numbers' => TRUE,           
+            'num_links' => 2,                     
             'full_tag_open' => '<div class="pagination">',
             'full_tag_close' => '</div>',
             'first_link' => 'First',
@@ -537,15 +592,18 @@ class User extends CI_Controller {
             'next_link' => '&raquo;',
             'prev_link' => '&laquo;',
         ];
-
-        $this->pagination->initialize($config);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data['user'] = $this->news->getnewsdata($config['per_page'], $page);
-
+    
+        $this->pagination->initialize($config);  
+    
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; 
+    
+        $offset = ($page - 1) * $config['per_page'];  // Correct offset calculation
+    
+        $data['user'] = $this->news->getnewsdata($config['per_page'], $offset);
+    
         $this->load->view('user/news', $data);
     }
+    
     public function newsadd(){
         $this->load->view('user/newsadd');
 
@@ -670,30 +728,33 @@ public function newsrecycledata($u) {
         }
     
     }
-    public function recyclenews() {
+    public function recyclenews()
+    {
         $config2 = [
             'base_url' => base_url('user/recyclenews'),
-            'per_page' => 4,
-            'total_rows' => $this->news->countrows(),
-            'use_page_numbers' => TRUE,
-            'num_links' => 2,
-            'full_tag_open' => '<div class="pagination">',
-            'full_tag_close' => '</div>',
-            'first_link' => 'First',
-            'last_link' => 'Last',
-            'next_link' => '&raquo;',
-            'prev_link' => '&laquo;',
+            'per_page' => 4, 
+            'total_rows' => $this->news->countrows(), 
+            'use_page_numbers' => TRUE, 
+            'num_links' => 2, 
+            'full_tag_open' => '<div class="pagination">', 
+            'full_tag_close' => '</div>', 
+            'first_link' => 'First', 
+            'last_link' => 'Last', 
+            'next_link' => '&raquo;', 
+            'prev_link' => '&laquo;', 
         ];
-
+    
         $this->pagination->initialize($config2);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data['newsrecycle'] = $this->news->getnewsrecycledata($config2['per_page'], $page);
-
-
+    
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+    
+        $offset = ($page - 1) * $config2['per_page']; 
+    
+        $data['newsrecycle'] = $this->news->getnewsrecycledata($config2['per_page'], $offset);
+    
         $this->load->view('user/newsrecycle', $data);
     }
+    
     public function newsdelete($u) {
         $this->load->model('user/news');
         $this->news->newsdelete($u);
@@ -729,8 +790,9 @@ public function newsrecycledata($u) {
             $this->pagination->initialize($config);
         
            
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-            $data['user'] = $this->pages->getpagesdata($config['per_page'], $page);  
+            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+        $offset = ($page - 1) * $config['per_page']; 
+            $data['user'] = $this->pages->getpagesdata($config['per_page'], $offset);  
         
             $this->load->view('user/pages', $data);
         }
@@ -784,9 +846,10 @@ public function newsrecycledata($u) {
         
             $this->pagination->initialize($config2);
         
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+            $offset = ($page - 1) * $config2['per_page']; 
         
-            $data['user'] = $this->pages->getpagesrecycledata($config2['per_page'], $page);
+            $data['user'] = $this->pages->getpagesrecycledata($config2['per_page'], $offset);
         
             $this->load->view('user/pagesrecycle', $data);
         }
@@ -865,6 +928,35 @@ public function pagesrestore($u){
      } else {
          echo "No record was updated. ";
      }
+}
+public function category() {
+    $this->load->model('user/Blogdata');
+    
+    // Pagination config
+    $config3 = [
+        'base_url' => base_url('user/category'),
+        'per_page' => 4,
+        'total_rows' => $this->Blogdata->num_rows(),
+        'use_page_numbers' => TRUE,
+        'num_links' => 2,
+        'full_tag_open' => '<div class="pagination">',
+        'full_tag_close' => '</div>',
+        'first_link' => 'First',
+        'last_link' => 'Last',
+        'next_link' => '&raquo;',
+        'prev_link' => '&laquo;',
+    ];
+
+    $this->pagination->initialize($config3);
+
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; // Default to page 1 if not set
+
+    $start = ($page - 1) * $config3['per_page'];
+
+    $data['blogcategory'] = $this->Blogdata->getblogcategorydata($config3['per_page'], $start);
+
+    // Load the view
+    $this->load->view('user/blogcategory', $data);
 }
 public function blogsite() {
     $this->load->model('blogpost/Blogview');

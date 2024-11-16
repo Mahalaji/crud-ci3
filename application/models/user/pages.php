@@ -42,6 +42,7 @@ class pages extends CI_Model
     }
     public function getpagesrecycledata($limit, $offset)
     {
+        $this->db->limit($limit, $offset);
         $this->db->where('recycle', 0);
         $query = $this->db->get('pages', $limit, $offset);
         return $query->result_array();

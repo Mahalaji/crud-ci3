@@ -1,19 +1,18 @@
 <?php
 class Blogdata extends CI_Model
 {
-
-    public function numrows()
-    {
-        $this->db->where('recycle', 1);
+    public function numrows() {
+    $this->db->where('recycle',1);
         return $this->db->count_all_results('blog');
     }
+    
+public function getblogdata($limit, $start) {
+    $this->db->limit($limit, $start);
+    $this->db->where('recycle',1);
+    $query = $this->db->get('blog'); // Assuming 'blogs' is the table name
+    return $query->result_array();
+}
 
-    public function getblogdata($limit, $offset)
-    {
-        $this->db->where('recycle', 1);
-        $query = $this->db->get('blog', $limit, $offset);
-        return $query->result_array();
-    }
     public function getdata($data)
     {
 
@@ -24,8 +23,13 @@ class Blogdata extends CI_Model
 
             'Description' => $data['Description'],
             'Create_Date' => $data['Create_Date'],
-            'Update_Date' => $data['Update_Date'],
-            'image'=> $data['image']
+            'post_Date' => $data['post_Date'],
+            'image'=> $data['image'],
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+
 
 
 
@@ -40,12 +44,14 @@ class Blogdata extends CI_Model
         $this->db->where('recycle', 0);
         return $this->db->count_all_results('blog');
     }
-    public function getblogrecycledata($limit, $offset)
-    {
-        $this->db->where('recycle', 0);
-        $query = $this->db->get('blog', $limit, $offset);
+    public function getblogrecycledata($limit, $start) {
+        $this->db->limit($limit, $start);
+        $this->db->where('recycle',0);
+        $query = $this->db->get('blog'); // Assuming 'blogs' is the table name
         return $query->result_array();
     }
+    
+   
     public function blogrecycledata($u)
     {
         $this->db->where('id', $u);
@@ -75,10 +81,17 @@ class Blogdata extends CI_Model
         $data = array(
             'Name' => $data['Name'],
             'Title' => $data['Title'],
+
             'Description' => $data['Description'],
             'Create_Date' => $data['Create_Date'],
-            'Update_Date' => $data['Update_Date'],
+            'Update_Date'=> $data['Update_Date'],
+            'post_Date' => $data['post_Date'],
             'image'=> $data['image'],
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+
 
         );
         $this->db->where('id', $u);
@@ -94,6 +107,17 @@ class Blogdata extends CI_Model
         } else {
             return false;
         }
+    }
+    public function num_rows() {
+        $this->db->where('recycle',1);
+            return $this->db->count_all_results('blog');
+        }
+        
+    public function getblogcategorydata($limit, $start) {
+        $this->db->limit($limit, $start);
+        $this->db->where('recycle',1);
+        $query = $this->db->get('blog'); // Assuming 'blogs' is the table name
+        return $query->result_array();
     }
    
     }

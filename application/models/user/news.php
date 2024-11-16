@@ -7,13 +7,14 @@ class news extends CI_Model
         $this->db->where('recycle', 1);
         return $this->db->count_all_results('news');
     }
-
-    public function getnewsdata($limit, $offset)
-    {
-        $this->db->where('recycle', 1);
-        $query = $this->db->get('news', $limit, $offset);
+    public function getnewsdata($limit, $offset) {
+        $this->db->limit($limit, $offset);
+        $this->db->where('recycle',1);
+        $query = $this->db->get('news'); // Assuming 'blogs' is the table name
         return $query->result_array();
     }
+   
+    
     public function getdata($data)
     {
 
@@ -43,8 +44,10 @@ class news extends CI_Model
     }
     public function getnewsrecycledata($limit, $offset)
     {
+        $this->db->limit($limit, $offset);
+        
         $this->db->where('recycle', 0);
-        $query = $this->db->get('news', $limit, $offset);
+        $query = $this->db->get('news');
         return $query->result_array();
     }
     public function newsrecycledata($u)

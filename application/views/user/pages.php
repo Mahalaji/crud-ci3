@@ -1,5 +1,5 @@
 <?php include("side_and_header.php");?>
-<link rel="stylesheet" href="<?php echo base_url('public/css/news.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('public/css/pages.css') ?>">
 
         <div class="info" style=" background: white;">
 

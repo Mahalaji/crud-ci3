@@ -312,7 +312,7 @@ a{
         <section id="recent-posts">
             <h2>Recent Blogs</h2>
             <div class="post-grid">
-            <?php
+            <?php 
                 foreach($user as $row):
                 ?>
                 <article class="feature">

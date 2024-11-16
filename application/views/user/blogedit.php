@@ -33,23 +33,41 @@
                                 <?php else: ?>
                                 <span>No Image</span>
                                 <?php endif; ?>
-                                <input type="file" name="image" id="image" />
+                                <input type="file" name="image" id="image" value="<?php echo $user['image']; ?>" />
                                 <?php if (isset($upload_error)) { echo '<div class="error-message">' . $upload_error . '</div>'; } ?>
                             </div>
                             <div class="input-group">
-                                <label>Create Date</label>
-                                <input type="date" id="Create Date" name="Create_Date"
-                                    value="<?php echo $user['Create_Date']; ?>">
+                                <label>Seo title</label>
+                                <input type="text" id="seo_title" name="seo_title" value="<?php echo $user['seo_title']; ?>">
                             </div>
                             <div class="input-group">
-                                <label>Update Date</label>
-                                <input type="date" id="Update Date" name="Update_Date"
+                                <label>Meta Keyword</label>
+                                <input type="text" id="meta_keyword" name="meta_keyword" value="<?php echo $user['meta_keyword']; ?>">
+                            </div>
+                            <div class="input-group">
+                                <label>Seo Robat</label>
+                                <input type="text" id="seo_robat" name="seo_robat" value="<?php echo $user['seo_robat']; ?>">
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Description</label>
+                                <input type="text" id="meta_description" name="meta_description" value="<?php echo $user['meta_description']; ?>">
+                            </div>
+                            <div class="input-group">
+                                <label>Post Date</label>
+                                <input type="date" id="post_Date" name="post_Date" value="<?php echo $user['post_Date']; ?>" readonly>
+                            </div>
+                            <div class="input-group">
+                                <input type="hidden" id="Update Date" name="Update_Date"
                                     value="<?php echo $user['Update_Date']; ?>">
+                            </div>
+                            <div class="input-group">
+                                <input type="hidden" id="Create_Date" name="Create_Date"
+                                    value="<?php echo $user['Create_Date']; ?>">
                             </div>
                             <div class="input-wrapper">
                                 <label>Description</label>
                                 <textarea id="editor" name="Description" value="<?php echo $user['Description']; ?>">
-                     &lt;p&gt;Your massage .&lt;/p&gt;
+                     &lt;p&gt;<?php echo $user['Description']; ?>&lt;/p&gt;
                        </textarea>
                             </div>
 

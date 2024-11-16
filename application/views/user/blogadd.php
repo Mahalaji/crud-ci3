@@ -23,18 +23,37 @@
 
                         </div>
                         <div>
+                        <div class="input-group">
+                                <label>Seo title</label>
+                                <input type="text" id="seo_title" name="seo_title" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Keyword</label>
+                                <input type="text" id="meta_keyword" name="meta_keyword" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Seo Robat</label>
+                                <input type="text" id="seo_robat" name="seo_robat" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Description</label>
+                                <input type="text" id="meta_description" name="meta_description" required>
+                            </div>
+                           
+
                             <div class="input-group">
                                 <label>Upload Image:</label><br>
                                 <input type="file" name="image" id="image" />
                                 <?php if (isset($upload_error)) { echo '<div class="error-message">' . $upload_error . '</div>'; } ?>
                             </div>
                             <div class="input-group">
-                                <label>Create Date</label>
-                                <input type="date" id="Create Date" name="Create_Date" required>
+                                <label>Post Date</label>
+                                <input type="date" id="post_Date" name="post_Date" required>
                             </div>
+
                             <div class="input-group">
-                                <label>Update Date</label>
-                                <input type="date" id="Update Date" name="Update_Date" required>
+                          
+                                <input type="hidden" id="Create_Date" name="Create_Date" required>
                             </div>
                             <div class="input-group">
                                 <label>Description</label>

@@ -16,11 +16,10 @@ body {
 }
 
 .sidebar {
-    width: 400px;
+    width: 200px;
     background-color: black;
     color: #ecf0f1;
     padding: 20px;
-    height: 150vh;
     display: flex;
     flex-direction: column;
     transition: width 0.3s ease;

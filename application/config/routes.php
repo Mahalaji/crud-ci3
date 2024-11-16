@@ -94,6 +94,7 @@ $route['pageseditdata/(:num)'] ='user/pageseditdata/$1';
 $route['pagesedit'] ='user/pagesedit';
 $route['pagesdelete/(:num)'] = 'user/pagesdelete/$1';
 $route['pagesrestore/(:num)'] = 'user/pagesrestore/$1';
+$route['category'] = 'user/category';
 $route['blogsite']= 'user/blogsite';
 $route['blogsshow'] = 'user/blogsshow';
 $route['newsshow']='user/newsshow';

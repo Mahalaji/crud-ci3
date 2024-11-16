@@ -1,24 +1,23 @@
 <?php include("side_and_header.php");?>
+<link rel="stylesheet" href="<?php echo base_url('public/css/dashboard.css') ?>">
             <div class="dashboard-content">
                 <div class="widget">
                     <h2>Total Users</h2>
-                    <p class="widget-value">10,234</p>
-                    <p class="widget-change positive">+5.3%</p>
+                    <p class="widget-value"><?php echo $user;?></p>
                 </div>
                 <div class="widget">
-                    <h2>Revenue</h2>
-                    <p class="widget-value">$54,321</p>
-                    <p class="widget-change negative">-2.1%</p>
+                    <h2>Total Blogs</h2>
+                    <p class="widget-value"><?php echo $blog;?></p>
                 </div>
                 <div class="widget">
-                    <h2>Active Sessions</h2>
-                    <p class="widget-value">1,234</p>
-                    <p class="widget-change positive">+12.7%</p>
+                    <h2>Total News</h2>
+                    <p class="widget-value"><?php echo $news;?></p>
+                    
                 </div>
                 <div class="widget wide">
                     <h2>Recent Activity</h2>
                     <ul class="activity-list">
-                        <li>User John signed up</li>
+                        <li>User <?php echo $username;?>  signed up</li>
                         <li>User Jane made a purchase</li>
                         <li>User Bob updated their profile</li>
                         <li>User Alice submitted a support ticket</li>
@@ -27,6 +26,7 @@
             </div>
         </main>
     </div>
+   
 </body>
 
 </html>

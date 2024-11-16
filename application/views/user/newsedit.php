@@ -52,7 +52,7 @@
                             <div class="input-wrapper">
                                 <label>Description</label>
                                 <textarea id="editor" name="Description" value="<?php echo $user['Description']; ?>">
-                     &lt;p&gt;Your massage .&lt;/p&gt;
+                     &lt;p&gt;<?php echo $user['Description']; ?>&lt;/p&gt;
                        </textarea>
                             </div>
 
