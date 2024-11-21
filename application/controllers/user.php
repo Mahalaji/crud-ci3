@@ -320,10 +320,17 @@ class User extends CI_Controller {
         $this->load->view('user/blog', $data);
     }
     
-    public function blogadd(){
+    public function blogadd() {
         $this->check_login();
-        $this->load->view('user/blogadd');
+        $this->load->model('user/Blogdata');
+        
+        // Fetch categories from the model
+        $data['category'] = $this->Blogdata->category();
+        
+        // Load the view and pass the categories data
+        $this->load->view('user/blogadd', $data);
     }
+    
     
     public function add() {
     $this->check_login();
@@ -334,15 +341,37 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
         $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
         
+        function createSlug($string) {
+            // Convert to lowercase
+            $slug = strtolower($string);
+        
+            // Remove special characters
+            $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
+        
+            // Replace spaces with hyphens
+            $slug = str_replace(' ', '-', $slug);
+        
+            // Trim leading and trailing hyphens
+            $slug = trim($slug, '-');
+        
+            return $slug;
+        }
+        
+        
+
         $data['Name'] = $this->input->post('Name');
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
         $data['Create_Date'] = date('Y-m-d');
+        
         $data['post_Date'] = $this->input->post('post_Date');
         $data['seo_robat'] = $this->input->post('seo_robat');
         $data['meta_keyword'] = $this->input->post('meta_keyword');
         $data['meta_description'] = $this->input->post('meta_description');
         $data['seo_title'] = $this->input->post('seo_title');
+        $data['blog_title_category'] = $this->input->post('blog_title_category');
+        $slug = createSlug($data['blog_title_category']);
+        $data['slug'] = $slug;
        
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/images/'; 
@@ -421,6 +450,7 @@ class User extends CI_Controller {
     $this->check_login();
         $this->load->model('user/Blogdata');
         $data['user'] = $this->Blogdata->blogeditdata($u);
+        $data['category'] = $this->Blogdata->category();
         $this->load->view('user/blogedit', $data);
     }
     public function edit(){
@@ -429,10 +459,27 @@ class User extends CI_Controller {
 
         $this->form_validation->set_rules('Name', 'Name', 'required');
         $this->form_validation->set_rules('Title', 'Title', 'required');
-
+         
+        function createSlug($string) {
+            // Convert to lowercase
+            $slug = strtolower($string);
+        
+            // Remove special characters
+            $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
+        
+            // Replace spaces with hyphens
+            $slug = str_replace(' ', '-', $slug);
+        
+            // Trim leading and trailing hyphens
+            $slug = trim($slug, '-');
+        
+            return $slug;
+        }
+        
         $data['Name'] = $this->input->post('Name');
         $data['Title'] = $this->input->post('Title');
-        $data['Description'] = $this->input->post('Description');
+        $description = str_replace('<p>&nbsp;</p>', '', $this->input->post('Description'));
+        $data['Description'] = $description;
         $data['Create_Date'] = $this->input->post('Create_Date');
         $data['Update_Date'] = date('Y-m-d');
         $data['post_Date'] = $this->input->post('post_Date');
@@ -440,8 +487,10 @@ class User extends CI_Controller {
         $data['seo_robat'] = $this->input->post('seo_robat');
         $data['meta_keyword'] = $this->input->post('meta_keyword');
         $data['seo_title'] = $this->input->post('seo_title');
+        $data['blog_title_category'] = $this->input->post('blog_title_category');
         $data['id'] = $this->input->post('id');
-
+        $slug = createSlug($data['blog_title_category']);
+        $data['slug'] = $slug;
          
         $u=$data['id'];
         if ($_FILES['image']['name']) {
@@ -605,7 +654,9 @@ class User extends CI_Controller {
     }
     
     public function newsadd(){
-        $this->load->view('user/newsadd');
+        $this->load->model('user/news');
+        $data['category'] = $this->news->category();
+        $this->load->view('user/newsadd',$data);
 
     }
     public function addnews(){
@@ -615,6 +666,10 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('Title', 'Title', 'required');
         $this->form_validation->set_rules('Number', 'Number', 'required');
         $this->form_validation->set_rules('Email', 'Email', 'required');
+        $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
 
         
         $data['Author_Name'] = $this->input->post('Author_Name');
@@ -623,6 +678,12 @@ class User extends CI_Controller {
         $data['Date'] = $this->input->post('Date');
         $data['Number'] = $this->input->post('Number');
         $data['Email'] = $this->input->post('Email');
+        $data['seo_robat'] = $this->input->post('seo_robat');
+        $data['meta_keyword'] = $this->input->post('meta_keyword');
+        $data['meta_description'] = $this->input->post('meta_description');
+        $data['seo_title'] = $this->input->post('seo_title');
+        $data['news_title_category'] = $this->input->post('news_title_category');
+
 
        
         if ($_FILES['image']['name']) {
@@ -657,6 +718,7 @@ class User extends CI_Controller {
         // echo "hjdfsfkds"; die;
         $this->load->model('user/news');
         $data['user'] = $this->news->newseditdata($u);
+        $data['category'] = $this->news->category($u);
         $this->load->view('user/newsedit', $data);
     }
     public function newsedit() {
@@ -667,15 +729,24 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('Title', 'Title', 'required');
         $this->form_validation->set_rules('Number', 'Number', 'required');
         $this->form_validation->set_rules('Email', 'Email', 'required');
-
+        $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+        $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+        $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+        $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
+        
         $data['Author_Name'] = $this->input->post('Author_Name');
         $data['Title'] = $this->input->post('Title');
-        $data['Description'] = $this->input->post('Description');
+        $description = str_replace('<p>&nbsp;</p>', '', $this->input->post('Description'));
+        $data['Description'] = $description;
         $data['Date'] = $this->input->post('Date');
         $data['Number'] = $this->input->post('Number');
         $data['Email'] = $this->input->post('Email');
         $data['id'] = $this->input->post('id');
-       
+        $data['seo_robat'] = $this->input->post('seo_robat');
+        $data['meta_keyword'] = $this->input->post('meta_keyword');
+        $data['meta_description'] = $this->input->post('meta_description');
+        $data['seo_title'] = $this->input->post('seo_title');
+        $data['news_title_category'] = $this->input->post('news_title_category');
         $u=$data['id'];
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/news_images/'; 
@@ -958,6 +1029,169 @@ public function category() {
     // Load the view
     $this->load->view('user/blogcategory', $data);
 }
+public function blogcategoryeditdata($u){
+    $this->check_login();
+        $this->load->model('user/Blogdata');
+        $data['user'] = $this->Blogdata->blogcategoryeditdata($u);
+        $this->load->view('user/blogcategoryedit', $data);
+    }
+public function blogcategoryedit() {
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    $data['meta_description'] = $this->input->post('meta_description');
+    $data['seo_robat'] = $this->input->post('seo_robat');
+    $data['meta_keyword'] = $this->input->post('meta_keyword');
+    $data['seo_title'] = $this->input->post('seo_title');
+    $data['id'] = $this->input->post('id');
+ 
+    $u=$data['id'];
+    $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+
+        $this->load->model('user/Blogdata');
+    
+        $data['user'] = $this->Blogdata->blogcategoryeditdata($u);
+
+        $this->load->view('user/blogcategoryedit',$data);
+        
+    } else {
+
+     $this->load->model('user/Blogdata');
+        $this->Blogdata->blogcategoryedit($u, $data);
+        redirect('user/category', 'refresh');
+
+    }
+}
+
+public function blogcategorydelete($u){
+    // echo $u; die;
+    $this->load->model('user/Blogdata');
+    $this->Blogdata->blogcategorydelete($u);
+    redirect('user/category', 'refresh'); 
+}
+public function blogcategoryadd(){
+    $this->load->view('user/blogcategoryadd');
+}
+public function categoryadd(){
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    $data['meta_description'] = $this->input->post('meta_description');
+    $data['seo_robat'] = $this->input->post('seo_robat');
+    $data['meta_keyword'] = $this->input->post('meta_keyword');
+    $data['seo_title'] = $this->input->post('seo_title');
+   
+    $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
+    if ($this->form_validation->run() == FALSE) {
+           
+        $this->load->view('user/blogcategoryadd', $data);
+    } else {
+        $this->load->model('user/Blogdata');
+        $this->Blogdata->insertdata($data);
+        redirect('user/category', 'refresh');
+    }
+
+}
+public function newscategory(){
+    $this->load->model('user/news');
+    
+    // Pagination config
+    $config3 = [
+        'base_url' => base_url('user/newscategory'),
+        'per_page' => 4,
+        'total_rows' => $this->news->numcount(),
+        'use_page_numbers' => TRUE,
+        'num_links' => 2,
+        'full_tag_open' => '<div class="pagination">',
+        'full_tag_close' => '</div>',
+        'first_link' => 'First',
+        'last_link' => 'Last',
+        'next_link' => '&raquo;',
+        'prev_link' => '&laquo;',
+    ];
+
+    $this->pagination->initialize($config3);
+
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; // Default to page 1 if not set
+
+    $start = ($page - 1) * $config3['per_page'];
+
+    $data['newscategory'] = $this->news->getnewscategorydata($config3['per_page'], $start);
+
+    // Load the view
+    $this->load->view('user/newscategory', $data);
+}
+public function newscategoryadd(){
+    $this->load->view('user/newscategoryadd');
+}
+public function newscategoryadddata(){
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
+
+    $data['meta_description'] = $this->input->post('meta_description');
+    $data['seo_robat'] = $this->input->post('seo_robat');
+    $data['meta_keyword'] = $this->input->post('meta_keyword');
+    $data['seo_title'] = $this->input->post('seo_title');
+   
+   
+    if ($this->form_validation->run() == FALSE) {
+           
+        $this->load->view('user/newscategoryadd', $data);
+    } else {
+        $this->load->model('user/news');
+        $this->news->newscategoryadddata($data);
+        redirect('user/newscategory', 'refresh');
+    }
+
+}
+public function newscategorydelete($u){
+    $this->load->model('user/news');
+    $this->news->newscategorydelete($u);
+    redirect('user/newscategory', 'refresh'); 
+}
+public function newscategoryeditdata($u){
+    $this->load->model('user/news');
+    $data['user'] = $this->news->newscategoryeditdata($u);
+    $this->load->view('user/newscategoryeditdata',$data);
+}
+public function newscategoryedit(){
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+
+    $data['meta_description'] = $this->input->post('meta_description');
+    $data['seo_robat'] = $this->input->post('seo_robat');
+    $data['meta_keyword'] = $this->input->post('meta_keyword');
+    $data['seo_title'] = $this->input->post('seo_title');
+    $data['id'] = $this->input->post('id');
+ 
+    $u=$data['id'];
+    $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
+    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
+    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
+    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
+    if ($this->form_validation->run() == FALSE) {
+
+        $this->load->model('user/news');
+    
+        $data['user'] = $this->news->newscategoryeditdata($u);
+
+        $this->load->view('user/newscategoryeditdata',$data);
+        
+    } else {
+
+     $this->load->model('user/news');
+        $this->news->newscategoryedit($u, $data);
+        redirect('user/newscategory', 'refresh');
+
+    }
+
+}
 public function blogsite() {
     $this->load->model('blogpost/Blogview');
     
@@ -969,6 +1203,7 @@ public function blogsite() {
 public function blogsshow() {
     $this->load->model('blogpost/Blogview');
     $data['user'] = $this->Blogview->blogsshow();
+    $data['sideblogcategory'] = $this->Blogview->sideblogcategory();  
     $this->load->view('blogpost/blogsshow', $data);
 }
     public function newsshow(){
@@ -988,5 +1223,13 @@ public function blogsshow() {
         $data['sidenews'] = $this->Blogview->sidenews();  
     $this->load->view('blogpost/particularnews', $data);
     }
+    public function categoryblog() {
+        // print_r($row); die;
+        $this->load->model('blogpost/Blogview');
+        $data['user'] = $this->Blogview->categoryblog();  
+        $data['sideblog'] = $this->Blogview->sideblog();  
+        // print_r($data['user']); die;
+    $this->load->view('blogpost/categoryblog', $data);
+}
 }
 ?>

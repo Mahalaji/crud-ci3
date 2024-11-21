@@ -1,5 +1,6 @@
 <?php include("side_and_header.php");?>
 <link rel="stylesheet" href="<?php echo base_url('public/css/blogrecycle.css') ?>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
             <div class="info" style=" background: white;">
 
                 <div class="header" style=" background: white;">

@@ -1,4 +1,5 @@
 <?php include("side_and_header.php");?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="<?php echo base_url('public/css/blog.css') ?>">
 
         <div class="info" style=" background: white;">
@@ -30,6 +31,7 @@
                             <th>Name</th>
                             <th>Image</th>
                             <th>Title</th>
+                            <th>Blog Category</th>
                             <th>Description</th>
                             <th>Create Date</th>
                             <th>Update Date</th>
@@ -48,6 +50,7 @@
                 <?php endif; ?>
             </td>
                             <td><?php echo $u['Title']; ?></td>
+                            <td><?php echo $u['blog_title_category']; ?></td>
                             <td><?php echo $u['Description']; ?></td>
                             <td><?php echo $u['Create_Date']; ?></td>
                             <td><?php echo $u['Update_Date']; ?></td>

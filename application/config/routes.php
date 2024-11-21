@@ -95,11 +95,25 @@ $route['pagesedit'] ='user/pagesedit';
 $route['pagesdelete/(:num)'] = 'user/pagesdelete/$1';
 $route['pagesrestore/(:num)'] = 'user/pagesrestore/$1';
 $route['category'] = 'user/category';
+$route['blogcategoryeditdata/(:num)'] = 'user/blogcategoryeditdata/$1';
+$route['blogcategoryedit'] = 'user/blogcategoryedit';
+$route['blogcategorydelete/(:num)'] = 'user/blogcategorydelete/$1';
+$route['blogcategoryadd']='user/blogcategoryadd';
+$route['categoryadd']='user/categoryadd';
+$route['newscategory']='user/newscategory';
+$route['newscategoryadd']='user/newscategoryadd';
+$route['newscategoryadddata']='user/newscategoryadddata';
+$route['newscategorydelete/(:num)']= 'user/newscategorydelete/$1';
+$route['newscategoryeditdata/(:num)']='user/newscategoryeditdata/$1';
+$route['newscategoryedit'] = 'user/newscategoryedit';
 $route['blogsite']= 'user/blogsite';
 $route['blogsshow'] = 'user/blogsshow';
 $route['newsshow']='user/newsshow';
 $route['particularshow/(:num)'] = 'user/particularshow/$1';
 $route['particularnews/(:num)'] = 'user/particularnews/$1';
+$route['generate_slug_ajax'] = 'news/generate_slug_ajax';
+$route['categoryblog']= 'user/categoryblog';
+
 
 
 

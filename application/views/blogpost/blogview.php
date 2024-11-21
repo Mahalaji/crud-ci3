@@ -129,7 +129,7 @@
     .post-content {
         padding: 1.5rem;
         text-align: center;
-        background-color: #f9f9f9;
+        background-color: white;
     }
 
     .post-content h3 {
@@ -146,7 +146,7 @@
 
     .post-content p {
         color: #7f8c8d;
-        margin-bottom: 1.5rem;
+        margin-bottom: -1.5rem;
         line-height: 1.6;
         font-size: 1rem;
     }
@@ -168,7 +168,7 @@
         transform: translateY(-2px);
     }
     .feature{
-        height: 472px;
+        height: 412px;
     }
 a{
     text-decoration: none;

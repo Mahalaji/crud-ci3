@@ -1,6 +1,7 @@
 <?php include("side_and_header.php");?>
 <link rel="stylesheet" href="<?php echo base_url('public/css/newsedit.css') ?>">
 <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
             <h2 class="header"> Add-News</h2>
             <div class="form1">
                 <form class="simple" method="post" action="<?php echo base_url('addnews')?>" enctype="multipart/form-data">
@@ -16,10 +17,21 @@
                                 <label>Title</label><br>
                                 <input type="text" id="Title" name="Title">
                                 <div class="error-message"> <?= form_error('Title') ?></div>
-
-
                             </div>
-                         
+                            <div class="input-group">
+                    <label>News Category</label>
+                    <select id="news_title_category" name="news_title_category" required>
+                    <option value="">Select News Category</option>
+                        <?php if (!empty($category)): ?>
+                        <?php foreach ($category as $categorys): ?>
+                        <option value="<?php echo $categorys['seo_title']; ?>"><?php echo $categorys['seo_title']; ?>
+                        </option>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                        <option value="">No Categories Available</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
 
                         </div>
                         <div>
@@ -39,6 +51,22 @@
                             <div class="input-group">
                                 <label>Email</label>
                                 <input type="text" id="Email" name="Email" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Seo title</label>
+                                <input type="text" id="seo_title" name="seo_title" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Keyword</label>
+                                <input type="text" id="meta_keyword" name="meta_keyword" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Seo Robat</label>
+                                <input type="text" id="seo_robat" name="seo_robat" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Meta Description</label>
+                                <input type="text" id="meta_description" name="meta_description" required>
                             </div>
                             <div class="input-group">
                                 <label>Description</label>

@@ -1,4 +1,5 @@
 <?php include("side_and_header.php");?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="<?php echo base_url('public/css/news.css') ?>">
 
         <div class="info" style=" background: white;">
@@ -31,6 +32,7 @@
                             <th>Author_Name</th>
                             <th>Image</th>
                             <th>Title</th>
+                            <th>News Category</th>
                             <th>Description</th>
                             <th>Date</th>
                             <th>Delete Status</th>
@@ -48,6 +50,7 @@
                 <?php endif; ?>
             </td>
                             <td><?php echo $u['Title']; ?></td>
+                            <td><?php echo $u['news_title_category']; ?></td>
                             <td><?php echo $u['Description']; ?></td>
                             <td><?php echo $u['Date']; ?></td>
                             <td><a href="<?php echo base_url('newsrecycledata/' . $u['id']); ?>"><i class='fas fa-trash' style='font-size:20px'></i></a></td>

@@ -111,5 +111,18 @@ private function limitWords($text, $wordLimit = 100) {
       $query = $this->db->get("news");
       return $query->result_array();
     }
+    public function sideblogcategory(){
+      $query = $this->db->get("blogcategory");
+     $check=$query->result_array();
+      // print_r($check);
+      return $check;
+    }
+    public function categoryblog(){
+      $this->db->where("recycle", 1);
+      $this->db->where("blog_title_category", "Health");
+      $query = $this->db->get("blog");
+      $blogs = $query->result_array();
+      return $blogs;
+    }
 }
 ?>

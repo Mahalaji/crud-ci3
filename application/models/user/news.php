@@ -28,11 +28,13 @@ class news extends CI_Model
             'Number' => $data['Number'],
             'image'=> $data['image'],
             'Email'=> $data['Email'],
-
-
-
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+            'news_title_category' => $data['news_title_category'],
         );
-       
+        // print_r($data); die;
         $this->db->insert('news', $data);
 
 
@@ -88,7 +90,11 @@ class news extends CI_Model
             'Number' => $data['Number'],
             'Image'=> $data['Image'],
             'Email'=> $data['Email'],
-
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+            'news_title_category' => $data['news_title_category'],
 
         );
         $this->db->where('id', $u);
@@ -105,8 +111,60 @@ class news extends CI_Model
             return false;
         }
     }
-   
+    public function numcount()
+    {
+        
+        return $this->db->count_all_results('newscategory');
     }
+    public function getnewscategorydata($limit, $start) {
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('newscategory'); // Assuming 'blogs' is the table name
+        return $query->result_array();
+    }
+    public function newscategoryadddata($data) {
+        
+
+        $data = array(
+            
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+
+        );
+       
+        $this->db->insert('newscategory', $data);
+    }
+    public function newscategorydelete($u) {
+        $this->db->where('id', $u);
+       return $this->db->delete('newscategory');
+    }
+    public function newscategoryeditdata($u) {
+        $this->db->where('id', $u);
+        $query = $this->db->get('newscategory');
+        return $query->row_array();
+    }
+    public function newscategoryedit($u,$data) {
+        $data = array(
+           
+            'seo_robat' => $data['seo_robat'],
+            'meta_keyword' => $data['meta_keyword'],
+            'meta_description' => $data['meta_description'],
+            'seo_title' => $data['seo_title'],
+
+
+        );
+        // echo $u; die;
+        // print_r($data); die();
+        $this->db->where('id', $u);
+        $this->db->update('newscategory', $data);
+
+    }
+    public function category() {
+        $query = $this->db->get('newscategory');  // Perform the query
+        return $query->result_array();  // Return the result as an array
+    }
+}
 
 
 

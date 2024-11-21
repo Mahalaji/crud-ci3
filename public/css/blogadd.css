@@ -23,7 +23,7 @@ body {
     color: #ecf0f1;
     padding: 20px;
     display: flex;
-    height: 170vh;
+    height: 195vh;
     flex-direction: column;
     transition: width 0.3s ease;
 }
@@ -210,7 +210,28 @@ h2.header {
     color: red;
     font-size: 14px;
 }
+#blog_title_category {
+    width: 100%;
+    padding: 12px;
+    border-radius: 7px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 
+#blog_title_category:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Optional: Custom arrow for the select dropdown */
+#blog_title_category::-ms-expand {
+    display: none;
+}
 .submit button {
     background-color: azure;
     color: black;

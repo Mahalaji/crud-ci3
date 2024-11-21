@@ -1,5 +1,6 @@
 <?php include("side_and_header.php");?>
 <link rel="stylesheet" href="<?php echo base_url('public/css/pagesadd.css') ?>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
             <h2 class="header"> Edit-pages</h2>
             <div class="form1">

@@ -1,11 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>403 Forbidden</title>
-</head>
-<body>
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-<p>Directory access is forbidden.</p>
-
-</body>
-</html>
+/**
+ * Generates a slug from a string.
+ *
+ * @param string $string The string to be converted to a slug
+ * @return string The generated slug
+ */
+if (!function_exists('generate_slug')) {
+    function generate_slug($string) {
+        // Convert to lowercase
+        $slug = strtolower($string);
+        
+        // Replace spaces with hyphens
+        $slug = preg_replace('/\s+/', '-', $slug);
+        
+        // Remove all non-alphanumeric characters except hyphens
+        $slug = preg_replace('/[^a-z0-9-]/', '', $slug);
+        
+        // Trim any trailing hyphens
+        return rtrim($slug, '-');
+    }
+}
+?>
