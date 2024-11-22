@@ -33,6 +33,7 @@ class news extends CI_Model
             'meta_description' => $data['meta_description'],
             'seo_title' => $data['seo_title'],
             'news_title_category' => $data['news_title_category'],
+            'slug' => $data['slug'],
         );
         // print_r($data); die;
         $this->db->insert('news', $data);
@@ -95,7 +96,7 @@ class news extends CI_Model
             'meta_description' => $data['meta_description'],
             'seo_title' => $data['seo_title'],
             'news_title_category' => $data['news_title_category'],
-
+            'slug' => $data['slug'],
         );
         $this->db->where('id', $u);
         $this->db->update('news', $data);

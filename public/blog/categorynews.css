@@ -79,7 +79,6 @@ h2 {
     justify-items: center;
     margin-top: 3rem;
 }
-
 h5.form-like {
     display: flex;
     flex-direction: column;
@@ -226,7 +225,7 @@ a{
     margin-bottom: 2rem;
 }
 .featured {
-    height: 420px;
+    height: 450px;
  
     display: none;
     

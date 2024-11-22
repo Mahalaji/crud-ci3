@@ -18,7 +18,7 @@
             <h1>Mahala ji</h1>
             <ul>
               <li><a href="<?php echo base_url('blogsite'); ?>">Home</a></li>
-                <li><a href="<?php echo base_url('blogsshow'); ?>">Blogs</a></li>
+                <li><a href="<?php echo base_url('blogsdata'); ?>">Blogs</a></li>
                 <li><a href="<?php echo base_url('newsshow'); ?>">News</a></li>
             </ul>
         </nav>
@@ -46,10 +46,10 @@
     <div class="col-md-3" style=" margin-top: 40px;">
         
           <ul class="list">
-            
+            <h4><strong>Related Category Data</strong></h4>
             <?php foreach ($sideblog as $row):?>
               
-              <a href="<?= base_url('particularshow/' . $row['id']); ?>">
+              <a href="<?= base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug']. '/'. $row['id'];?>">
               <li class="li-container"><img src="<?= base_url('uploads/images/' . $row['image']); ?>" class="card-img-top" ?>
                 <h5 class="card-title"><?= $row['Title']; ?></h5>
                 </a>

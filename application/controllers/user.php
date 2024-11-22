@@ -137,13 +137,7 @@ class User extends CI_Controller {
 
         $this->load->view('user/User-Data', $data);
     }
-	// public function usereditdata($u) {
-    //     $this->check_login();
-    //     $this->load->model('Userdata');
-        
-    //     $data['user'] = $this->Userdata->usereditdata($u);
-    //     $this->load->view('user/user-edit', $data);
-    // }
+
     public function usereditdata($u) {
         $this->check_login();
         $this->load->model('Userdata');
@@ -329,9 +323,7 @@ class User extends CI_Controller {
         
         // Load the view and pass the categories data
         $this->load->view('user/blogadd', $data);
-    }
-    
-    
+    } 
     public function add() {
     $this->check_login();
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
@@ -370,7 +362,7 @@ class User extends CI_Controller {
         $data['meta_description'] = $this->input->post('meta_description');
         $data['seo_title'] = $this->input->post('seo_title');
         $data['blog_title_category'] = $this->input->post('blog_title_category');
-        $slug = createSlug($data['blog_title_category']);
+        $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
        
         if ($_FILES['image']['name']) {
@@ -489,7 +481,7 @@ class User extends CI_Controller {
         $data['seo_title'] = $this->input->post('seo_title');
         $data['blog_title_category'] = $this->input->post('blog_title_category');
         $data['id'] = $this->input->post('id');
-        $slug = createSlug($data['blog_title_category']);
+        $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
          
         $u=$data['id'];
@@ -621,9 +613,6 @@ class User extends CI_Controller {
      }
 
     }
-    // public function news(){
-    //     $this->load->view('user/news');
-    // }
     public function News()
     {
         $this->check_login();
@@ -671,6 +660,21 @@ class User extends CI_Controller {
     $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
     $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
 
+    function createSlug($string) {
+        // Convert to lowercase
+        $slug = strtolower($string);
+    
+        // Remove special characters
+        $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
+    
+        // Replace spaces with hyphens
+        $slug = str_replace(' ', '-', $slug);
+    
+        // Trim leading and trailing hyphens
+        $slug = trim($slug, '-');
+    
+        return $slug;
+    }
         
         $data['Author_Name'] = $this->input->post('Author_Name');
         $data['Title'] = $this->input->post('Title');
@@ -683,7 +687,8 @@ class User extends CI_Controller {
         $data['meta_description'] = $this->input->post('meta_description');
         $data['seo_title'] = $this->input->post('seo_title');
         $data['news_title_category'] = $this->input->post('news_title_category');
-
+        $slug = createSlug($data['Title']);
+        $data['slug'] = $slug;
 
        
         if ($_FILES['image']['name']) {
@@ -734,6 +739,21 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
         $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
         
+        function createSlug($string) {
+            // Convert to lowercase
+            $slug = strtolower($string);
+        
+            // Remove special characters
+            $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
+        
+            // Replace spaces with hyphens
+            $slug = str_replace(' ', '-', $slug);
+        
+            // Trim leading and trailing hyphens
+            $slug = trim($slug, '-');
+        
+            return $slug;
+        }
         $data['Author_Name'] = $this->input->post('Author_Name');
         $data['Title'] = $this->input->post('Title');
         $description = str_replace('<p>&nbsp;</p>', '', $this->input->post('Description'));
@@ -748,6 +768,9 @@ class User extends CI_Controller {
         $data['seo_title'] = $this->input->post('seo_title');
         $data['news_title_category'] = $this->input->post('news_title_category');
         $u=$data['id'];
+        $slug = createSlug($data['Title']);
+        $data['slug'] = $slug;
+
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/news_images/'; 
             $config['allowed_types'] = 'jpg|jpeg|png|gif';  
@@ -943,9 +966,6 @@ public function newsrecycledata($u) {
     }
 public function pagesedit(){
     $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
-    
-        
-    
     $this->form_validation->set_rules('Title', 'Title', 'required');
     $this->form_validation->set_rules('number', 'number', 'required');
     $this->form_validation->set_rules('email', 'email', 'required');
@@ -982,7 +1002,6 @@ public function pagesedit(){
 
 
 }
-       
 public function pagesdelete($u){
     $this->load->model('user/pages');
     $this->pages->pagesdelete($u);
@@ -1209,27 +1228,38 @@ public function blogsshow() {
     public function newsshow(){
         $this->load->model('blogpost/Blogview');
     $data['newsview'] = $this->Blogview->newsshow();
+    $data['sidenewscategory'] = $this->Blogview->sidenewscategory();  
     $this->load->view('blogpost/newsshow', $data);
     }
-    public function particularshow($row) {
+    public function particularshow($rowcategory,$rowslug,$rowid) {
+        // print_r($rowcategory); die;
         $this->load->model('blogpost/Blogview');
-        $data['user'] = $this->Blogview->particularshow($row);  
-        $data['sideblog'] = $this->Blogview->sideblog();  
+        $data['user'] = $this->Blogview->particularshow($rowslug,$rowid);  
+        $data['sideblog'] = $this->Blogview->sideblog($rowcategory);  
     $this->load->view('blogpost/particularblog', $data);
     }
-    public function particularnews($news) {
+    public function particularnews($newscategory,$newsslug,$newsid) {
         $this->load->model('blogpost/Blogview');
-        $data['news'] = $this->Blogview->particularnews($news); 
-        $data['sidenews'] = $this->Blogview->sidenews();  
+        $data['news'] = $this->Blogview->particularnews($newsid); 
+        $data['sidenews'] = $this->Blogview->sidenews($newscategory);  
     $this->load->view('blogpost/particularnews', $data);
     }
-    public function categoryblog() {
+    public function categoryblog($row) {
         // print_r($row); die;
+        // $this->load->model('blogpost/Blogview');
+
         $this->load->model('blogpost/Blogview');
-        $data['user'] = $this->Blogview->categoryblog();  
-        $data['sideblog'] = $this->Blogview->sideblog();  
+        $data['user'] = $this->Blogview->categoryblog($row);  
+        // $data['sideblog'] = $this->Blogview->sideblog();  
         // print_r($data['user']); die;
     $this->load->view('blogpost/categoryblog', $data);
+}
+public function newss($row) {
+    // print_r($row); die;particularshow
+    $this->load->model('blogpost/Blogview');
+    $data['user'] = $this->Blogview->newss($row);  
+    // print_r($data['user']); die;
+$this->load->view('blogpost/categorynews', $data);
 }
 }
 ?>

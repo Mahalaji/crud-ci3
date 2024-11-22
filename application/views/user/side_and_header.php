@@ -42,7 +42,7 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-container">
-                        <a href="<?php echo base_url('news'); ?>"><i class="fas fa-newspaper"></i> News List</a>
+                        <a href="<?php echo base_url('newsdata'); ?>"><i class="fas fa-newspaper"></i> News List</a>
                         <a href="<?php echo base_url('newscategory'); ?>"><i class="fa fa-list"></i> Category</a>
                             <!-- <a href="#">Link 3</a> -->
                         </div>

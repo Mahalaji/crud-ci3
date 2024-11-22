@@ -71,7 +71,44 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+.row{
+   flex-wrap: nowrap !important;
+}
+h5.form-like {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+h5.form-like input {
+    padding: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+h5.form-like button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+h5.form-like button:hover {
+    background-color: #0056b3;
+}
+/* h5{
+    padding-left: 30px;
+} */
 .post-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -192,7 +229,7 @@ footer {
     margin-bottom: 2rem;
 }
 .featured {
-    height: 515px;
+    height: 470px;
  
     display: none;
     

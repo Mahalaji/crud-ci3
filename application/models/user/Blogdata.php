@@ -93,7 +93,7 @@ public function getblogdata($limit, $start) {
             'meta_description' => $data['meta_description'],
             'seo_title' => $data['seo_title'],
             'blog_title_category' => $data['blog_title_category'],
-             'slug' => $data['slug'],
+            'slug' => $data['slug'],
 
 
         );

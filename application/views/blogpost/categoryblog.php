@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?php echo base_url('public/blog/blogview.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/blog/categoryblog.css'); ?>">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
             <h1>Mahala ji</h1>
             <ul>
                 <li><a href="<?php echo base_url('blogsite'); ?>">Home</a></li>
-                <li><a href="<?php echo base_url('blogsshow'); ?>">Blogs</a></li>
+                <li><a href="<?php echo base_url('blogsdata'); ?>">Blogs</a></li>
                 <li><a href="<?php echo base_url('newsshow'); ?>">News</a></li>
             </ul>
         </nav>
@@ -27,20 +27,20 @@
     <main>
         <div class="row">
             <section id="recent-posts" >
-                <h2>Recent Blogs</h2>
+                <h2> Blogs</h2>
                 <div class="post-grid">
                     <?php foreach($user as $row):?>
 
                     <article class="featured">
 
                         <div class="post-image">
-                            <img src="uploads/images/<?php echo $row['image'] ?>" style=" height: 14rem;" />
+                        <img src="<?= base_url('uploads/images/' . $row['image']); ?>" class="card-img-top" ?>
                         </div>
                         <div class="post-content">
-                            <a href="<?php echo base_url('particularshow/') . $row['id'];?>">
+                            <a href="<?php echo base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug']. '/'. $row['id'];?>">
                                 <h3><?php  echo $row['Title'];  ?></h3>
-                                <p><?php echo $row['Description']; ?></p>
-                            </a>
+                                <p><?php $show= substr($row['Description'],0,150); echo $show.'....'; ?></p>
+                          </a> 
                         </div>
                     </article>
                     <?php endforeach; ?>
@@ -48,22 +48,7 @@
                 </div>
                 <a href="#" id="loadMore">Load More</a>
         </section>
-        <!-- <div class="col-md-3" style=" margin-top: 40px;">
-
-            <ul class="list">
-
-                <?php foreach ($sideblogcategory as $row):?>
-
-                <a href="<?= base_url('particularshow/' . $row['id']); ?>">
-                    <!-- <li class="li-container"><img src="<?= base_url('uploads/images/' . $row['image']); ?>"
-                            class="card-img-top" ?> -->
-                        <h5 class="card-title"><?= $row['seo_title']; ?></h5>
-                </a>
-                </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        </div> -->
+      
     </main>
 
     <footer>

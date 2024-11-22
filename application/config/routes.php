@@ -76,7 +76,7 @@ $route['blogrestore/(:num)']= 'user/blogrestore/$1';
 $route['adminpass']= 'user/adminpass';
 $route['updateprofile']= 'user/updateprofile';
 $route['updateadminprofile']='user/updateadminprofile';
-$route['news']= 'user/news';
+$route['newsdata']= 'user/news';
 $route['newsadd']= 'user/newsadd';
 $route['addnews']= 'user/addnews';
 $route['newseditdata/(:num)']= 'user/newseditdata/$1';
@@ -107,12 +107,13 @@ $route['newscategorydelete/(:num)']= 'user/newscategorydelete/$1';
 $route['newscategoryeditdata/(:num)']='user/newscategoryeditdata/$1';
 $route['newscategoryedit'] = 'user/newscategoryedit';
 $route['blogsite']= 'user/blogsite';
-$route['blogsshow'] = 'user/blogsshow';
+$route['blogsdata'] = 'user/blogsshow';
 $route['newsshow']='user/newsshow';
-$route['particularshow/(:num)'] = 'user/particularshow/$1';
-$route['particularnews/(:num)'] = 'user/particularnews/$1';
+$route['blogs/(:any)/(:any)/(:num)'] = 'user/particularshow/$1/$2/$3';
+$route['news/(:any)/(:any)/(:num)'] = 'user/particularnews/$1/$2/$3';
 $route['generate_slug_ajax'] = 'news/generate_slug_ajax';
-$route['categoryblog']= 'user/categoryblog';
+$route['blogss/(:any)']= 'user/categoryblog/$1';
+$route['newss/(:any)'] = 'user/newss/$1';
 
 
 

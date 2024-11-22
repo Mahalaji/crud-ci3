@@ -8,20 +8,17 @@
     <form class="simple" method="post" action="<?php echo base_url('add')?>" enctype="multipart/form-data">
         <div id="d">
             <div>
-                <div class="input-group">
-                    <label>Name</label>
-                    <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)">
-                    <div class="error-message"> <?= form_error('Name') ?></div>
-
-                </div>
+                
                 <div class="input-group">
                     <label>Title</label><br>
                     <input type="text" id="Title" name="Title">
                     <div class="error-message"> <?= form_error('Title') ?></div>
-
-
                 </div>
-
+                <div class="input-group">
+                    <label>Author_Name</label>
+                    <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)">
+                    <div class="error-message"> <?= form_error('Name') ?></div>
+                </div>
 
             </div>
             <div>

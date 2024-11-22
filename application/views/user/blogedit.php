@@ -7,22 +7,19 @@
     <form class="simple" method="post" action="<?php echo base_url('edit')?>" enctype="multipart/form-data">
         <div id="d">
             <div>
-                <div class="input-group">
-                    <label>Name</label>
-                    <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)"
-                        value="<?php echo $user['Name']; ?>">
-                    <div class="error-message"> <?= form_error('Name') ?></div>
-
-                </div>
+              
                 <div class="input-group">
                     <label>Title</label><br>
                     <input type="text" id="Title" name="Title" value="<?php echo $user['Title']; ?>">
                     <input type="hidden" id="id" name="id" value="<?php echo $user['id']; ?>">
                     <div class="error-message"> <?= form_error('Title') ?></div>
-
-
                 </div>
-
+                <div class="input-group">
+                    <label>Author_Name</label>
+                    <input type="text" id="Name" name="Name" onkeyup="lettersOnly(this)"
+                        value="<?php echo $user['Name']; ?>">
+                    <div class="error-message"> <?= form_error('Name') ?></div>
+                </div>
                 <!-- <div class="input-group">
                     <label>Blog Category</label><br>
                     <input type="text" id="blog_title_category" name="blog_title_category"
