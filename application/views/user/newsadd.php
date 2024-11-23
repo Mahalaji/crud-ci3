@@ -16,7 +16,7 @@
                             <div class="input-group">
                                 <label>Title</label><br>
                                 <input type="text" id="Title" name="Title">
-                                <div class="error-message"> <?= form_error('Title') ?></div>
+                                <div class="error-message"><?= form_error('Title'); ?></div>
                             </div>
                             <div class="input-group">
                     <label>News Category</label>

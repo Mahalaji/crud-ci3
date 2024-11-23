@@ -140,27 +140,39 @@ article:hover {
   
   .li-container {
     display: flex;
-    align-items: start;  
+    align-items: start;
     text-align: left;
     width: 100%;
-    border-top: .5px solid #e9e5e5;
-    padding-top: 10px;
-    margin-left: 0; /* Remove any left margin */
-  }
-  
-  .li-container img {
-    height: 50px;  
-    width: 50px;   
-    object-fit: cover;  
-    border-radius: 5px; 
-    margin-right: 10px;  
-  }
-  
-  .li-container h5 {
-    font-size: 1rem;
-    margin: 0;
-    color: #333;
-  }
+    border-top: 1px solid #e9e5e5;
+    padding: 12px 0;
+    margin-left: 0;
+    }
+    
+    .li-container img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 12px;
+    }
+  .col-md-3 h4 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    }
+    .li-container h5 {
+        font-size: 0.9rem;
+        margin: 0;
+        color: #34495e;
+        line-height: 1.4;
+        transition: color 0.3s ease;
+        }
+        
+        .li-container:hover h5 {
+        color: #3498db;
+        }
   
   ul li {
     margin: 10px 0;
@@ -357,3 +369,65 @@ a{
     opacity: 1;
     transform: translateY(0);
 }
+.featured {
+    height: auto;
+    width: 100%;
+}
+
+#featured-post .featured {
+    grid-template-columns: 1fr;
+}
+
+.list {
+    width: 100%;
+}
+
+.li-container img {
+    height: 50px;
+    width: 50px;
+}
+@media (max-width: 600px) {
+    main {
+    padding: 2rem 3%;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .post-image {
+        height: 250px;
+    }
+    
+    .post-content h3 {
+        font-size: 1.4rem;
+    }
+    
+    .post-content p {
+        font-size: 0.9rem;
+    }
+    
+    .read-more {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    #featured-post .featured {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .list {
+        width: 100%;
+    }
+    }
+    @media (max-width: 1024px) {
+        .featured {
+        width: 100%;
+        height: auto;
+        }
+    
+        .post-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+        
+        }

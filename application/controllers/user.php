@@ -325,37 +325,25 @@ class User extends CI_Controller {
         $this->load->view('user/blogadd', $data);
     } 
     public function add() {
-    $this->check_login();
+        $this->check_login();
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+
         $this->form_validation->set_rules('Name', 'Name', 'required');
-        $this->form_validation->set_rules('Title', 'Title', 'required');
+        $this->form_validation->set_rules('Title', 'Title', 'required|callback_check_title_exists');
         $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
         $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
         $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
-        
         function createSlug($string) {
-            // Convert to lowercase
             $slug = strtolower($string);
-        
-            // Remove special characters
             $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
-        
-            // Replace spaces with hyphens
             $slug = str_replace(' ', '-', $slug);
-        
-            // Trim leading and trailing hyphens
             $slug = trim($slug, '-');
-        
             return $slug;
         }
-        
-        
-
         $data['Name'] = $this->input->post('Name');
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
         $data['Create_Date'] = date('Y-m-d');
-        
         $data['post_Date'] = $this->input->post('post_Date');
         $data['seo_robat'] = $this->input->post('seo_robat');
         $data['meta_keyword'] = $this->input->post('meta_keyword');
@@ -364,19 +352,19 @@ class User extends CI_Controller {
         $data['blog_title_category'] = $this->input->post('blog_title_category');
         $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
-       
+
         if ($_FILES['image']['name']) {
-            $config['upload_path'] = './uploads/images/'; 
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';  
-            $config['max_size'] = 2048; 
-            $config['file_name'] = time() . '_' . $_FILES['image']['name'];  
-            
+            $config['upload_path'] = './uploads/images/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = 2048;
+            $config['file_name'] = time() . '_' . $_FILES['image']['name'];
+    
             $this->load->library('upload', $config);
     
             if (!$this->upload->do_upload('image')) {
                 $data['upload_error'] = $this->upload->display_errors();
                 $this->load->view('user/blogadd', $data);
-                return;  
+                return;
             } else {
                 $upload_data = $this->upload->data();
                 $data['image'] = $upload_data['file_name'];
@@ -391,6 +379,16 @@ class User extends CI_Controller {
             redirect('user/blog', 'refresh');
         }
     }
+    public function check_title_exists($Title) {
+        $this->load->model('user/Blogdata');
+
+        if ($this->Blogdata->title_exists($Title)) {
+            $this->form_validation->set_message('check_title_exists', 'The title is already taken.');
+            return FALSE; 
+        }
+        return TRUE;
+    }
+    
     public function blogrecycle() {
         $this->check_login();
         $this->load->model('user/Blogdata');
@@ -483,7 +481,7 @@ class User extends CI_Controller {
         $data['id'] = $this->input->post('id');
         $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
-         
+         $Title=$data['Title'];
         $u=$data['id'];
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/images/'; 
@@ -502,22 +500,28 @@ class User extends CI_Controller {
                 $data['image'] = $upload_data['file_name'];
             }
         }
-    
         if ($this->form_validation->run() == FALSE) {
-
             $this->load->model('user/Blogdata');
         
             $data['user'] = $this->Blogdata->blogeditdata($u);
 
             $this->load->view('user/blogedit',$data);
-            
         } else {
-    
-         $this->load->model('user/Blogdata');
-            $this->Blogdata->edit($u, $data);
-            redirect('user/blog', 'refresh');
-    
-            
+            $this->load->model('user/Blogdata'); 
+            $Title = $this->input->post('Title'); 
+
+            if ($this->Blogdata->title_exists($Title)) {
+                $this->form_validation->set_message('check_title_exists', 'The title is already taken.');
+                $this->load->model('user/Blogdata');
+        
+            $data['user'] = $this->Blogdata->blogeditdata($u);
+
+            $this->load->view('user/blogedit',$data);
+            } else {
+                $this->load->model('user/Blogdata');
+                $this->Blogdata->edit($u, $data);
+                redirect('user/blog', 'refresh');
+            }
         }
     }
     public function blogrestore($u){
@@ -648,34 +652,24 @@ class User extends CI_Controller {
         $this->load->view('user/newsadd',$data);
 
     }
-    public function addnews(){
+    public function addnews() {
         $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
-
-        $this->form_validation->set_rules('Author_Name', 'Author_Name', 'required');
-        $this->form_validation->set_rules('Title', 'Title', 'required');
+        $this->form_validation->set_rules('Author_Name', 'Author Name', 'required');
+        $this->form_validation->set_rules('Title', 'Title', 'required|callback_news_title_exists');
         $this->form_validation->set_rules('Number', 'Number', 'required');
         $this->form_validation->set_rules('Email', 'Email', 'required');
-        $this->form_validation->set_rules('seo_title', 'seo_title', 'required');
-    $this->form_validation->set_rules('meta_description', 'meta_description', 'required');
-    $this->form_validation->set_rules('meta_keyword', 'meta_keyword', 'required');
-    $this->form_validation->set_rules('seo_robat', 'seo_robat', 'required');
-
-    function createSlug($string) {
-        // Convert to lowercase
-        $slug = strtolower($string);
+        $this->form_validation->set_rules('seo_title', 'SEO Title', 'required');
+        $this->form_validation->set_rules('meta_description', 'Meta Description', 'required');
+        $this->form_validation->set_rules('meta_keyword', 'Meta Keyword', 'required');
+        $this->form_validation->set_rules('seo_robat', 'SEO Robot', 'required');
+        function createSlug($string) {
+            $slug = strtolower($string);
+            $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
+            $slug = str_replace(' ', '-', $slug);
+            $slug = trim($slug, '-');
+            return $slug;
+        }
     
-        // Remove special characters
-        $slug = preg_replace('/[^a-z0-9\s]/', '', $slug);
-    
-        // Replace spaces with hyphens
-        $slug = str_replace(' ', '-', $slug);
-    
-        // Trim leading and trailing hyphens
-        $slug = trim($slug, '-');
-    
-        return $slug;
-    }
-        
         $data['Author_Name'] = $this->input->post('Author_Name');
         $data['Title'] = $this->input->post('Title');
         $data['Description'] = $this->input->post('Description');
@@ -690,35 +684,40 @@ class User extends CI_Controller {
         $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
 
-       
         if ($_FILES['image']['name']) {
-            $config['upload_path'] = './uploads/news_images/'; 
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';  
-            $config['max_size'] = 2048; 
-            $config['file_name'] = time() . '_' . $_FILES['image']['name'];  
-            
+            $config['upload_path'] = './uploads/news_images/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = 2048;
+            $config['file_name'] = time() . '_' . $_FILES['image']['name'];
+    
             $this->load->library('upload', $config);
     
             if (!$this->upload->do_upload('image')) {
                 $data['upload_error'] = $this->upload->display_errors();
                 $this->load->view('user/newsadd', $data);
-                return;  
+                return;
             } else {
                 $upload_data = $this->upload->data();
                 $data['image'] = $upload_data['file_name'];
             }
         }
-    
-        if ($this->form_validation->run() == FALSE) {
-           
-            $this->load->view('user/newsadd', $data);
-        } else {
-            $this->load->model('user/news');
-            $this->news->getdata($data);
-            redirect('user/news', 'refresh');
-        }
 
-    }
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('user/newsadd', $data);
+        } 
+         else {
+                $this->news->getdata($data);
+                redirect('user/news', 'refresh');
+            }
+        }
+    public function news_title_exists($Title) {
+        $this->load->model('user/news');
+        if ($this->news->news_title_exists($Title)) {
+            $this->form_validation->set_message('news_title_exists', 'The title is already taken.');
+            return FALSE;  
+        }
+        return TRUE; 
+    }  
     public function newseditdata($u) {
         // echo "hjdfsfkds"; die;
         $this->load->model('user/news');
@@ -770,7 +769,7 @@ class User extends CI_Controller {
         $u=$data['id'];
         $slug = createSlug($data['Title']);
         $data['slug'] = $slug;
-
+        $Title=$data['Title'];
         if ($_FILES['image']['name']) {
             $config['upload_path'] = './uploads/news_images/'; 
             $config['allowed_types'] = 'jpg|jpeg|png|gif';  
@@ -791,24 +790,27 @@ class User extends CI_Controller {
             }
         }
         if ($this->form_validation->run() == FALSE) {
-
             $this->load->model('user/news');
         
             $data['user'] = $this->news->newseditdata($u);
 
             $this->load->view('user/newsedit',$data);
-            
         } else {
-      
-      
-         $this->load->model('user/news');
-            $this->news->update_newsdata($u, $data);
+            $this->load->model('user/news');
+            $Title = $this->input->post('Title'); 
+
+            if ($this->news->news_title_exists($Title)) {
+                $this->form_validation->set_message('check_title_exists', 'The title is already taken.');
+                $this->load->model('user/news');
+        
+            $data['user'] = $this->news->newseditdata($u);
+
+            $this->load->view('user/newsedit',$data);
+            } else {
+                $this->news->update_newsdata($u, $data);
             redirect('user/News', 'refresh');
-    
-            
-        }
-    
-    
+            }
+        } 
 }
 public function newsrecycledata($u) {
     $this->load->model('user/news'); 
@@ -1231,19 +1233,20 @@ public function blogsshow() {
     $data['sidenewscategory'] = $this->Blogview->sidenewscategory();  
     $this->load->view('blogpost/newsshow', $data);
     }
-    public function particularshow($rowcategory,$rowslug,$rowid) {
+    public function particularshow($rowcategory,$rowslug) {
         // print_r($rowcategory); die;
         $this->load->model('blogpost/Blogview');
-        $data['user'] = $this->Blogview->particularshow($rowslug,$rowid);  
+        $data['user'] = $this->Blogview->particularshow($rowslug);  
         $data['sideblog'] = $this->Blogview->sideblog($rowcategory);  
     $this->load->view('blogpost/particularblog', $data);
     }
-    public function particularnews($newscategory,$newsslug,$newsid) {
+    public function particularnews($newscategory,$newsslug) {
         $this->load->model('blogpost/Blogview');
-        $data['news'] = $this->Blogview->particularnews($newsid); 
+        $data['news'] = $this->Blogview->particularnews($newsslug); 
         $data['sidenews'] = $this->Blogview->sidenews($newscategory);  
     $this->load->view('blogpost/particularnews', $data);
     }
+    
     public function categoryblog($row) {
         // print_r($row); die;
         // $this->load->model('blogpost/Blogview');

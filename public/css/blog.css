@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar {
-    width: fit-content;
+    width: 25%;
     background-color: black;
     color: #ecf0f1;
     padding: 20px;
@@ -298,34 +298,39 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 .pagination-links {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 20px;
-}
-
-.pagination-links a {
-    display: inline-block;
-    padding: 8px 16px;
-    margin: 0 5px;
-    border: 1px solid grey;
+    flex-wrap: wrap;
+    }
+    
+    .pagination-links a, .pagination-links strong {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    height: 40px;
+    margin: 5px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
     border-radius: 4px;
     text-decoration: none;
-    color: grey;
-}
-
-.pagination-links a:hover {
-    background-color: #2196F3;
-    color: rgb(9, 6, 6);
-}
-
-.pagination-links .active {
-    background-color: #4CAF50;
-    color: rgb(14, 3, 3);
-}
-
-.pagination-links a:disabled {
-    background-color: grey;
-    color: grey;
-}
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    }
+    
+    .pagination-links a:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    }
+    
+    .pagination-links strong {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    }
 
 @media (max-width: 768px) {
     .dashboard {
@@ -379,3 +384,10 @@ tr:nth-child(even) {
         width: 150px;
     }
 }
+@media (max-width: 480px) {
+    .pagination-links a, .pagination-links strong {
+    min-width: 30px;
+    height: 30px;
+    font-size: 14px;
+    }
+    }

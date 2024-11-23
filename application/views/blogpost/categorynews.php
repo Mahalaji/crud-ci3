@@ -37,7 +37,7 @@
                         <img src="<?= base_url('uploads/news_images/' . $row['Image']); ?>" class="card-img-top" ?>
                         </div>
                         <div class="post-content">
-                            <a href="<?php echo base_url('news/') . $row['news_title_category'].'/'.  $row['slug']. '/'. $row['id'];?>">
+                            <a href="<?php echo base_url('news/') . $row['news_title_category'].'/'.  $row['slug'];?>">
                                 <h3><?php  echo $row['Title'];  ?></h3>
                                 <p><?php $show= substr($row['Description'],0,150); echo $show.'....'; ?></p>
                             </a>

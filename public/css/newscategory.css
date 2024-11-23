@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar {
-    width: 25%;
+    width: 16%;
     background-color: black;
     color: #ecf0f1;
     padding: 20px;
@@ -296,11 +296,6 @@ tr:hover {
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-.pagination-links {
-    text-align: center;
-    margin-top: 20px;
-}
-
 .pagination-links {
     display: flex;
     justify-content: center;

@@ -38,7 +38,7 @@
                             <img src="uploads/news_images/<?php echo $news['Image'] ?>" style=" height: 14rem;" />
                         </div>
                         <div class="post-content">
-                            <a href="<?php echo base_url('news/') . $news['news_title_category'].'/'.  $news['slug']. '/'. $news['id'];?>">
+                            <a href="<?php echo base_url('news/') . $news['news_title_category'].'/'.  $news['slug'];?>">
                                 <h3><?php  echo $news['Title'];  ?></h3>
                                 <p><?php echo $news['Description']; ?></p>
                             </a>

@@ -90,9 +90,9 @@ private function limitWords($text, $wordLimit = 100) {
   }
 
 
-    public function particularshow($rowslug,$rowid){
+    public function particularshow($rowslug){
       $this->db->where('slug',$rowslug);
-      $this->db->where('id',$rowid);
+      // $this->db->where('id',$rowid);
       $query=  $this->db->get("blog");
       return $query->row_array();
     }
@@ -102,9 +102,9 @@ private function limitWords($text, $wordLimit = 100) {
       $query = $this->db->get("blog");
       return $query->result_array();
     }
-    public function particularnews($newsid){
+    public function particularnews($newsslug){
       
-      $this->db->where('id',$newsid);
+      $this->db->where('slug',$newsslug);
       $query=  $this->db->get("news");
       return $query->row_array();
     }

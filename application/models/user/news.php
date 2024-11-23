@@ -165,6 +165,14 @@ class news extends CI_Model
         $query = $this->db->get('newscategory');  // Perform the query
         return $query->result_array();  // Return the result as an array
     }
+    public function news_title_exists($Title) {
+        $this->db->where('Title', $Title);
+        $query = $this->db->get('news');
+        if ($query->num_rows() > 0) {
+            return TRUE; 
+        }
+        return FALSE; 
+    }
 }
 
 

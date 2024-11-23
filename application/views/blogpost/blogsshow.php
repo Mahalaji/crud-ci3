@@ -38,7 +38,7 @@
                             <img src="uploads/images/<?php echo $row['image'] ?>" style=" height: 14rem;" />
                         </div>
                         <div class="post-content">
-                            <a href="<?php echo base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug']. '/'. $row['id'];?>">
+                            <a href="<?php echo base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug'];?>">
                                 <h3><?php  echo $row['Title'];  ?></h3>
                                 <p><?php echo $row['Description']; ?></p>
                             </a>

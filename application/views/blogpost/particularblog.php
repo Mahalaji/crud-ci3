@@ -46,10 +46,10 @@
     <div class="col-md-3" style=" margin-top: 40px;">
         
           <ul class="list">
-            <h4><strong>Related Category Data</strong></h4>
+            <h4><strong>Related Category Blogs</strong></h4>
             <?php foreach ($sideblog as $row):?>
               
-              <a href="<?= base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug']. '/'. $row['id'];?>">
+              <a href="<?= base_url('blogs/'). $row['blog_title_category']. '/'. $row['slug'];?>">
               <li class="li-container"><img src="<?= base_url('uploads/images/' . $row['image']); ?>" class="card-img-top" ?>
                 <h5 class="card-title"><?= $row['Title']; ?></h5>
                 </a>

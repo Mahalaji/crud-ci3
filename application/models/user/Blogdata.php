@@ -40,6 +40,14 @@ public function getblogdata($limit, $start) {
 
 
     }
+    public function title_exists($Title) { 
+        $this->db->where('Title', $Title);
+        $query = $this->db->get('blog');
+        if ($query->num_rows() > 0) {
+            return TRUE; 
+        }
+        return FALSE; 
+    }
     public function countrows()
     {
         $this->db->where('recycle', 0);
@@ -51,8 +59,6 @@ public function getblogdata($limit, $start) {
         $query = $this->db->get('blog'); // Assuming 'blogs' is the table name
         return $query->result_array();
     }
-    
-   
     public function blogrecycledata($u)
     {
         $this->db->where('id', $u);
