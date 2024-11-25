@@ -173,55 +173,90 @@ class news extends CI_Model
         }
         return FALSE; 
     }
+    public function getFilteredNews($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('Author_Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('news_title_category', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $this->db->where('recycle',1);
+        $query = $this->db->get('news');
+
+        return $query->result();
+    }
+    public function countAllNews() {
+        $this->db->where('recycle',1);
+        return $this->db->count_all_results('news');
+    }
+    public function countFilteredNews($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('Author_Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('news_title_category', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+        $this->db->where('recycle',1);
+        return $this->db->count_all_results('news'); 
+    }
+    public function getFilteredRecycleNews($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('Author_Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('news_title_category', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $this->db->where('recycle',0);
+        $query = $this->db->get('news');
+
+        return $query->result();
+    }
+    public function countAllRecycleNews() {
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('news');
+    }
+    public function countFilteredRecycleNews($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('Author_Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('news_title_category', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('news'); 
+    }
 }
-
-
-
-
-// public function usereditdata($u) {
-
-//     $this->db->where('id', $u);
-//     $query = $this->db->get('user_detail'); 
-//     return $query->row_array(); 
-// }
-
-// public function update_userdata($u, $data) {
-
-//     $updatedata=[
-//         'name' => $data['name'],    
-//         'email'=> $data['email'],  
-//         'gender'=> $data['gender'],       
-//         'mobilenumber'=> $data['mobilenumber'],       
-//         'city'=> $data['city'],       
-//         'state'=> $data['state'],       
-//         'country'=> $data['country'],       
-//         'pincode'=> $data['pincode'],       
-//         'address'=> $data['address'],       
-//         'password'=> $data['password'],       
-
-//     ];
-//     $this->db->where('id', $u);
-//     return $this->db->update('user_detail', $updatedata); 
-// }
-// public function userdeletedata($u){
-//     $this->db->where('id', $u);
-//     return $this->db->delete('user_detail');
-// }
-// public function userpass($u,$oldpassword,$data) {
-// //   echo "$u\n" ; echo $oldpassword; die;
-//     $this->db->where('id', $u);
-//     $this->db->where('password',$oldpassword);
-//     $query = $this->db->get('user_detail'); 
-//     if ($query->num_rows() > 0) {
-//        $update=[
-//           'password'=>$data['newpassword']
-//        ];
-//        $this->db->where('id', $u);
-//        return $this->db->update('user_detail', $update);
-//     } else {
-//         return false;
-//     }
-// }
-
 
 ?>

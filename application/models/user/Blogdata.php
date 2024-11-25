@@ -171,56 +171,101 @@ public function getblogdata($limit, $start) {
         $query = $this->db->get('blogcategory');  // Perform the query
         return $query->result_array();  // Return the result as an array
     }
+    public function getFilteredBlogs($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('blog_title_category', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $this->db->where('recycle',1);
+        $query = $this->db->get('blog');
+
+        return $query->result();
+    }
     
+    
+    public function countAllBlogs() {
+        $this->db->where('recycle',1);
+        return $this->db->count_all_results('blog');
+    }
+    
+    public function countFilteredBlogs($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('blog_title_category', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+        $this->db->where('recycle',1);
+        return $this->db->count_all_results('blog'); 
+    }
+       public function getFilteredRecycleBlogs($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('blog_title_category', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $this->db->where('recycle',0);
+        $query = $this->db->get('blog');
+
+        return $query->result();
+    }
+    
+    
+    public function countAllRecycleBlogs() {
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('blog');
+    }
+    
+    public function countFilteredRecycleBlogs($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('Name', $search);
+            $this->db->or_like('Title', $search);
+            $this->db->or_like('blog_title_category', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('blog'); 
+    }
 }
 
 
 
 
-// public function usereditdata($u) {
-
-//     $this->db->where('id', $u);
-//     $query = $this->db->get('user_detail'); 
-//     return $query->row_array(); 
-// }
-
-// public function update_userdata($u, $data) {
-
-//     $updatedata=[
-//         'name' => $data['name'],    
-//         'email'=> $data['email'],  
-//         'gender'=> $data['gender'],       
-//         'mobilenumber'=> $data['mobilenumber'],       
-//         'city'=> $data['city'],       
-//         'state'=> $data['state'],       
-//         'country'=> $data['country'],       
-//         'pincode'=> $data['pincode'],       
-//         'address'=> $data['address'],       
-//         'password'=> $data['password'],       
-
-//     ];
-//     $this->db->where('id', $u);
-//     return $this->db->update('user_detail', $updatedata); 
-// }
-// public function userdeletedata($u){
-//     $this->db->where('id', $u);
-//     return $this->db->delete('user_detail');
-// }
-// public function userpass($u,$oldpassword,$data) {
-// //   echo "$u\n" ; echo $oldpassword; die;
-//     $this->db->where('id', $u);
-//     $this->db->where('password',$oldpassword);
-//     $query = $this->db->get('user_detail'); 
-//     if ($query->num_rows() > 0) {
-//        $update=[
-//           'password'=>$data['newpassword']
-//        ];
-//        $this->db->where('id', $u);
-//        return $this->db->update('user_detail', $update);
-//     } else {
-//         return false;
-//     }
-// }
 
 
 ?>

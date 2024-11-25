@@ -57,6 +57,45 @@ class Userdata extends CI_Model {
             return false;
         }
     }
+    public function getFilteredUser($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('name', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('gender', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $query = $this->db->get('user_detail');
+
+        return $query->result();
+    }
+    public function countAllUser() {
+        return $this->db->count_all_results('user_detail');
+    }
+    public function countFilteredUser($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('name', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('gender', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
     
+        return $this->db->count_all_results('user_detail'); 
+    }
 }
 ?>

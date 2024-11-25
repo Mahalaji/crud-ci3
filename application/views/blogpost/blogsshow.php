@@ -10,21 +10,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?php echo base_url('public/blog/blogview.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/blog/blogshow.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/blog/header.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/blog/footer.css'); ?>">
+
 </head>
 
 <body>
-    <header>
-        <nav>
-            <h1>Mahala ji</h1>
-            <ul>
-                <li><a href="<?php echo base_url('blogsite'); ?>">Home</a></li>
-                <li><a href="<?php echo base_url('blogsdata'); ?>">Blogs</a></li>
-                <li><a href="<?php echo base_url('newsshow'); ?>">News</a></li>
-            </ul>
-        </nav>
-    </header>
-
+    <?php include("header.php"); ?>
     <main>
         <div class="row">
             <section id="recent-posts" class="col-md-9">
@@ -50,26 +43,22 @@
                 <a href="#" id="loadMore">Load More</a>
             </section>
             <div class="col-md-3" style=" margin-top: 40px;">
-                    <h5><strong>Categories:-</strong></h5>
-
-                <ul class="list">
-                    <?php foreach ($sideblogcategory as $row):?>
-                    <h5 class="form-like">
-                        <a href="<?= base_url('blogss/'. $row['seo_title'] ); ?>">
-                            <h5 class="card-title"><?= $row['seo_title']; ?></h5>
-                        </a>
-                    </h5>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-
+                <h5><strong>Categories:-</strong></h5>
+                <h5 class="form-like">
+                    <ul class="list">
+                        <?php foreach ($sideblogcategory as $row):?>
+                        <h5 class="form-like">
+                            <a href="<?= base_url('blogss/'. $row['seo_title'] ); ?>">
+                                <h5 class="card-title"><?= $row['seo_title']; ?></h5>
+                            </a>
+                            </li>
+                            <?php endforeach; ?>
+                    </ul>
+                </h5>
             </div>
         </div>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Attractive Blog. All rights reserved.</p>
-    </footer>
+    <?php include("footer.php"); ?>
     <script>
     $(document).ready(function() {
         $(".featured").slice(0, 2).show();

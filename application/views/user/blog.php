@@ -26,10 +26,21 @@
                                      font-size: 23px;
                                        border: 1px solid black;">Recycle</a>
                     </h1>
-                    <table>
+                    <div class="filter-container">
+            <h4>Filter</h4>
+            <div class="filter">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate">
+                <button id="filterButton">Filter</button>
+            </div>
+            </div>
+                    <table id="blogtable">
+                        <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
-                            <th>Image</th>
                             <th>Title</th>
                             <th>Blog Category</th>
                             <th>Description</th>
@@ -37,33 +48,54 @@
                             <th>Update Date</th>
                             <th>Delete Status</th>
                             <th>Edit</th>
-                            
                         </tr>
-                    <?php foreach ($blogs as $u): ?>
-                        <tr>
-                            <td><?php echo $u['Name']; ?></td>
-                            <td>
-                <?php if (!empty($u['image'])): ?>
-                    <img src="<?php echo base_url('uploads/images/' . $u['image']); ?>" alt="Blog Image" height="50">
-                <?php else: ?>
-                    <span>No Image</span>
-                <?php endif; ?>
-            </td>
-                            <td><?php echo $u['Title']; ?></td>
-                            <td><?php echo $u['blog_title_category']; ?></td>
-                            <td><?php echo $u['Description']; ?></td>
-                            <td><?php echo $u['Create_Date']; ?></td>
-                            <td><?php echo $u['Update_Date']; ?></td>
-                            <td><a href="<?php echo base_url('blogrecycledata/' . $u['id']); ?>"><i class='fas fa-trash' style='font-size:20px'></i></a></td>
-                            <td><a href="<?php echo base_url('blogeditdata/' . $u['id']); ?>"><i class='fas fa-edit' style='font-size:24px'></i></a></td>
+                        </thead>
+                        <tbody>
 
-                        </tr>
-                        <?php endforeach; ?>
+                        </tbody>
                 </table>
-                <div class="pagination-links">
-                    <?php echo $this->pagination->create_links(); ?>
-                </div>
             </div>
         </div>
     </div>
-</div>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const table = $('#blogtable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "<?= base_url('user/getBlogData') ?>",
+                "type": "POST",
+                "data": function (d) {
+                    d.start_date = $('#startDate').val(); // Pass start date
+                    d.end_date = $('#endDate').val();    // Pass end date
+                }
+            },
+            "columns": [
+                { "data": 0 },
+                { "data": 1 },
+                { "data": 2 },
+                { "data": 3 },
+                { "data": 4 },
+                { "data": 5, "orderable": false },
+                { "data": 6, "orderable": false },
+                { "data": 7, "orderable": false },
+                { "data": 8, "orderable": false }
+            ],
+            "pageLength": 4,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "order": [[0, 'asc']],
+            "info": true
+        });
+
+        $('#filterButton').on('click', function () {
+            table.ajax.reload();
+        });
+    });
+</script>
+

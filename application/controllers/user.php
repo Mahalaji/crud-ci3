@@ -115,29 +115,54 @@ class User extends CI_Controller {
     public function userdata()
     {
         $this->check_login();
-        $config = [
-            'base_url' => base_url('user/userdata'),
-            'per_page' => 5,
-            'total_rows' => $this->Userdata->num_rows(),
-            'use_page_numbers' => TRUE,
-            'num_links' => 2,
-            'full_tag_open' => '<div class="pagination">',
-            'full_tag_close' => '</div>',
-            'first_link' => 'First',
-            'last_link' => 'Last',
-            'next_link' => '&raquo;',
-            'prev_link' => '&laquo;',
-        ];
 
-        $this->pagination->initialize($config);
-
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
-        $offset = ($page - 1) * $config['per_page'];
-        $data['user'] = $this->Userdata->getuserdata($config['per_page'], $offset);
-
-        $this->load->view('user/User-Data', $data);
+        $this->load->view('user/User-Data');
     }
-
+    public function getUserData() {
+		$this->load->model('user/Userdata');
+		
+		
+		$search = $this->input->post('search')['value'];
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$draw = $this->input->post('draw');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$order_column = $_POST['order'][0]['column']; 
+		$order_dir = $_POST['order'][0]['dir']; 
+		
+		
+		$columns = ['id','name', 'email', 'gender']; 
+		$order_by = $columns[$order_column]; 
+	
+		
+		$users = $this->Userdata->getFilteredUser($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+		$totalRecords = $this->Userdata->countAllUser();
+		$filteredRecords = $this->Userdata->countFilteredUser($search, $start_date, $end_date);
+	
+		$counter = $start + 1;
+		$data = [];
+		foreach ($users as $user) {
+			$data[] = [
+				$counter++,
+				htmlspecialchars($user->name),
+				htmlspecialchars($user->email),
+				htmlspecialchars($user->gender),
+                "<a href='". base_url('usereditdata/' . $user->id)."'><i class='fas fa-edit' style='font-size:24px'></i></a>",
+                "<a href='". base_url('userdeletedata/' . $user->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:24px'></i></a>",
+                "<a href='". base_url('userpass/' . $user->id)."'><i class='fas fa-lock' style='font-size:24px'></i></a>"
+              
+			];
+		}
+		$response = [
+			"draw" => intval($draw),
+			"recordsTotal" => $totalRecords,
+			"recordsFiltered" => $filteredRecords,
+			"data" => $data
+		];
+		echo json_encode($response);
+	}
     public function usereditdata($u) {
         $this->check_login();
         $this->load->model('Userdata');
@@ -284,35 +309,54 @@ class User extends CI_Controller {
 
     }
     public function blog() {
-        $this->check_login();
-        $this->load->model('user/Blogdata');
-        
-        // Pagination config
-        $config1 = [
-            'base_url' => base_url('user/blog'),
-            'per_page' => 4,
-            'total_rows' => $this->Blogdata->numrows(),
-            'use_page_numbers' => TRUE,
-            'num_links' => 2,
-            'full_tag_open' => '<div class="pagination">',
-            'full_tag_close' => '</div>',
-            'first_link' => 'First',
-            'last_link' => 'Last',
-            'next_link' => '&raquo;',
-            'prev_link' => '&laquo;',
-        ];
-    
-        $this->pagination->initialize($config1);
-    
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; // Default to page 1 if not set
-    
-        $start = ($page - 1) * $config1['per_page'];
-    
-        $data['blogs'] = $this->Blogdata->getblogdata($config1['per_page'], $start);
-    
-        // Load the view
-        $this->load->view('user/blog', $data);
+        $this->load->view('user/blog');
     }
+    public function getBlogData() {
+		$this->load->model('user/Blogdata');
+		
+		
+		$search = $this->input->post('search')['value'];
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$draw = $this->input->post('draw');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$order_column = $_POST['order'][0]['column']; 
+		$order_dir = $_POST['order'][0]['dir']; 
+		
+		
+		$columns = ['id','Name', 'Title', 'blog_title_category','Description', 'Create_Date', 'Update_Date']; 
+		$order_by = $columns[$order_column]; 
+	
+		
+		$blogs = $this->Blogdata->getFilteredBlogs($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+		$totalRecords = $this->Blogdata->countAllBlogs();
+		$filteredRecords = $this->Blogdata->countFilteredBlogs($search, $start_date, $end_date);
+	
+		$counter = $start + 1;
+		$data = [];
+		foreach ($blogs as $blog) {
+			$data[] = [
+				$counter++,
+				htmlspecialchars($blog->Name),
+				htmlspecialchars($blog->Title),
+				htmlspecialchars($blog->blog_title_category),
+                htmlspecialchars($blog->Description),
+				htmlspecialchars($blog->Create_Date),
+				htmlspecialchars($blog->Update_Date),
+               "<a href='" . base_url('blogrecycledata/' . $blog->id) . "'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
+                "<a href='". base_url('blogeditdata/' . $blog->id) . "' ><i class='fas fa-edit' style='font-size:24px'></i></a>"
+			];
+		}
+		$response = [
+			"draw" => intval($draw),
+			"recordsTotal" => $totalRecords,
+			"recordsFiltered" => $filteredRecords,
+			"data" => $data
+		];
+		echo json_encode($response);
+	}
     
     public function blogadd() {
         $this->check_login();
@@ -390,34 +434,55 @@ class User extends CI_Controller {
     }
     
     public function blogrecycle() {
-        $this->check_login();
-        $this->load->model('user/Blogdata');
-    
-        $config2 = [
-            'base_url' => base_url('user/blogrecycle'),
-            'per_page' => 4,
-            'total_rows' => $this->Blogdata->countrows(),
-            'use_page_numbers' => TRUE,
-            'num_links' => 2,
-            'full_tag_open' => '<div class="pagination">',
-            'full_tag_close' => '</div>',
-            'first_link' => 'First',
-            'last_link' => 'Last',
-            'next_link' => '&raquo;',
-            'prev_link' => '&laquo;',
-        ];
-    
-        $this->pagination->initialize($config2);
-    
-        $page = ($this->uri->segment(3)) ? (int)$this->uri->segment(3) : 1;  
-        
-        $start = ($page - 1) * $config2['per_page'];
-    
-        $data['blogrecycle'] = $this->Blogdata->getblogrecycledata($config2['per_page'], $start);
-    
-        $this->load->view('user/blogrecycle', $data);
+        $this->load->view('user/blogrecycle');
     }
-    
+    public function getBlogRecycleData() {
+		$this->load->model('user/Blogdata');
+		
+		
+		$search = $this->input->post('search')['value'];
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$draw = $this->input->post('draw');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$order_column = $_POST['order'][0]['column']; 
+		$order_dir = $_POST['order'][0]['dir']; 
+		
+		
+		$columns = ['id','Name', 'Title', 'blog_title_category','Description', 'Create_Date', 'Update_Date']; 
+		$order_by = $columns[$order_column]; 
+	
+		
+		$blogss = $this->Blogdata->getFilteredRecycleBlogs($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+		$totalRecords = $this->Blogdata->countAllRecycleBlogs();
+		$filteredRecords = $this->Blogdata->countFilteredRecycleBlogs($search, $start_date, $end_date);
+	
+		$counter = $start + 1;
+		$data = [];
+		foreach ($blogss as $blog) {
+			$data[] = [
+				$counter++,
+				htmlspecialchars($blog->Name),
+				htmlspecialchars($blog->Title),
+				htmlspecialchars($blog->blog_title_category),
+                htmlspecialchars($blog->Description),
+				htmlspecialchars($blog->Create_Date),
+				htmlspecialchars($blog->Update_Date),
+                "<a href='". base_url('blogdelete/' . $blog->id) ."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
+                "<a href='". base_url('blogrestore/' . $blog->id)."'><i class='fa fa-download' style='font-size:25px'></i></a>"
+            
+			];
+		}
+		$response = [
+			"draw" => intval($draw),
+			"recordsTotal" => $totalRecords,
+			"recordsFiltered" => $filteredRecords,
+			"data" => $data
+		];
+		echo json_encode($response);
+	}
     public function blogrecycledata($u){
     $this->check_login();
         $this->load->model('user/Blogdata'); 
@@ -621,31 +686,53 @@ class User extends CI_Controller {
     {
         $this->check_login();
     
-        $config = [
-            'base_url' => base_url('user/news'),  
-            'per_page' => 3,                      
-            'total_rows' => $this->news->num_rows(),  
-            'use_page_numbers' => TRUE,           
-            'num_links' => 2,                     
-            'full_tag_open' => '<div class="pagination">',
-            'full_tag_close' => '</div>',
-            'first_link' => 'First',
-            'last_link' => 'Last',
-            'next_link' => '&raquo;',
-            'prev_link' => '&laquo;',
-        ];
-    
-        $this->pagination->initialize($config);  
-    
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; 
-    
-        $offset = ($page - 1) * $config['per_page'];  // Correct offset calculation
-    
-        $data['user'] = $this->news->getnewsdata($config['per_page'], $offset);
-    
-        $this->load->view('user/news', $data);
+        $this->load->view('user/news');
     }
-    
+    public function getNewsData() {
+        $this->load->model('user/news');
+
+		$search = $this->input->post('search')['value'];
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$draw = $this->input->post('draw');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$order_column = $_POST['order'][0]['column']; 
+		$order_dir = $_POST['order'][0]['dir']; 
+		
+		
+		$columns = ['id','Author_Name', 'Title', 'news_title_category','Description', 'Date']; 
+		$order_by = $columns[$order_column]; 
+	
+		
+		$newss = $this->news->getFilteredNews($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+		$totalRecords = $this->news->countAllnews();
+		$filteredRecords = $this->news->countFilteredNews($search, $start_date, $end_date);
+	
+		$counter = $start + 1;
+		$data = [];
+		foreach ($newss as $news) {
+			$data[] = [
+				$counter++,
+				htmlspecialchars($news->Author_Name),
+				htmlspecialchars($news->Title),
+				htmlspecialchars($news->news_title_category),
+                htmlspecialchars($news->Description),
+				htmlspecialchars($news->Date),
+             "<a href='". base_url('newsrecycledata/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
+              "<a href='". base_url('newseditdata/' . $news->id)."'><i class='fas fa-edit' style='font-size:24px'></i></a>"
+             
+			];
+		}
+		$response = [
+			"draw" => intval($draw),
+			"recordsTotal" => $totalRecords,
+			"recordsFiltered" => $filteredRecords,
+			"data" => $data
+		];
+		echo json_encode($response);
+	} 
     public function newsadd(){
         $this->load->model('user/news');
         $data['category'] = $this->news->category();
@@ -826,31 +913,53 @@ public function newsrecycledata($u) {
     }
     public function recyclenews()
     {
-        $config2 = [
-            'base_url' => base_url('user/recyclenews'),
-            'per_page' => 4, 
-            'total_rows' => $this->news->countrows(), 
-            'use_page_numbers' => TRUE, 
-            'num_links' => 2, 
-            'full_tag_open' => '<div class="pagination">', 
-            'full_tag_close' => '</div>', 
-            'first_link' => 'First', 
-            'last_link' => 'Last', 
-            'next_link' => '&raquo;', 
-            'prev_link' => '&laquo;', 
-        ];
-    
-        $this->pagination->initialize($config2);
-    
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
-    
-        $offset = ($page - 1) * $config2['per_page']; 
-    
-        $data['newsrecycle'] = $this->news->getnewsrecycledata($config2['per_page'], $offset);
-    
-        $this->load->view('user/newsrecycle', $data);
+        $this->load->view('user/newsrecycle');
     }
-    
+    public function getNewsRecycleData() {
+        $this->load->model('user/news');
+
+		$search = $this->input->post('search')['value'];
+		$start = $this->input->post('start');
+		$length = $this->input->post('length');
+		$draw = $this->input->post('draw');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$order_column = $_POST['order'][0]['column']; 
+		$order_dir = $_POST['order'][0]['dir']; 
+		
+		
+		$columns = ['id','Author_Name', 'Title', 'news_title_category','Description', 'Date']; 
+		$order_by = $columns[$order_column]; 
+	
+		
+		$newss = $this->news->getFilteredRecycleNews($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+		$totalRecords = $this->news->countAllRecyclenews();
+		$filteredRecords = $this->news->countFilteredRecycleNews($search, $start_date, $end_date);
+	
+		$counter = $start + 1;
+		$data = [];
+		foreach ($newss as $news) {
+			$data[] = [
+				$counter++,
+				htmlspecialchars($news->Author_Name),
+				htmlspecialchars($news->Title),
+				htmlspecialchars($news->news_title_category),
+                htmlspecialchars($news->Description),
+				htmlspecialchars($news->Date),
+               "<a href='". base_url('newsdelete/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px'></i></a>",
+                 "<a href='". base_url('newsrestore/' . $news->id)."'><i class='fa fa-download' style='font-size:25px'></i></a>"
+            
+			];
+		}
+		$response = [
+			"draw" => intval($draw),
+			"recordsTotal" => $totalRecords,
+			"recordsFiltered" => $filteredRecords,
+			"data" => $data
+		];
+		echo json_encode($response);
+	}    
     public function newsdelete($u) {
         $this->load->model('user/news');
         $this->news->newsdelete($u);
@@ -868,29 +977,53 @@ public function newsrecycledata($u) {
              }
          }
          public function pages() {
+            $this->load->view('user/pages');
+        }
+        public function getPageData() {
+            $this->load->model('user/pages');
+            
+            
+            $search = $this->input->post('search')['value'];
+            $start = $this->input->post('start');
+            $length = $this->input->post('length');
+            $draw = $this->input->post('draw');
+            $start_date = $this->input->post('start_date');
+            $end_date = $this->input->post('end_date');
+            
+            $order_column = $_POST['order'][0]['column']; 
+            $order_dir = $_POST['order'][0]['dir']; 
+            
+            
+            $columns = ['id', 'Title', 'email','gender', 'description', 'Date']; 
+            $order_by = $columns[$order_column]; 
         
-            $config = [
-                'base_url' => base_url('user/pages'),
-                'per_page' => 4,
-                'total_rows' => $this->pages->num_rows(), 
-                'use_page_numbers' => TRUE,
-                'num_links' => 2,
-                'full_tag_open' => '<div class="pagination">',
-                'full_tag_close' => '</div>',
-                'first_link' => 'First',
-                'last_link' => 'Last',
-                'next_link' => '&raquo;',
-                'prev_link' => '&laquo;',
+            
+            $Pages = $this->pages->getFilteredPages($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+            $totalRecords = $this->pages->countAllPages();
+            $filteredRecords = $this->pages->countFilteredPages($search, $start_date, $end_date);
+        
+            $counter = $start + 1;
+            $data = [];
+            foreach ($Pages as $Page) {
+                $data[] = [
+                    $counter++,
+                    htmlspecialchars($Page->Title),
+                    htmlspecialchars($Page->email),
+                    htmlspecialchars($Page->gender),
+                    htmlspecialchars($Page->description),
+                    htmlspecialchars($Page->Date),
+                    "<a href='".base_url('pagesrecycledata/' . $Page->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px'></i></a>",
+                    "<a href='". base_url('pageseditdata/' . $Page->id)."'><i class='fas fa-edit'style='font-size:24px'></i></a>"
+                 
+                ];
+            }
+            $response = [
+                "draw" => intval($draw),
+                "recordsTotal" => $totalRecords,
+                "recordsFiltered" => $filteredRecords,
+                "data" => $data
             ];
-        
-            $this->pagination->initialize($config);
-        
-           
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
-        $offset = ($page - 1) * $config['per_page']; 
-            $data['user'] = $this->pages->getpagesdata($config['per_page'], $offset);  
-        
-            $this->load->view('user/pages', $data);
+            echo json_encode($response);
         }
         public function pagesadd() {
             $this->load->view('user/pagesadd');

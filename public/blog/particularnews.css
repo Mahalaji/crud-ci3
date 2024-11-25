@@ -189,7 +189,7 @@ article:hover {
   
   ul li a {
     font-size: 1.25rem;
-    color: #333;
+    color: #fff;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -254,6 +254,7 @@ footer {
 }
 a{
     text-decoration: none;
+    color: #fff;
 }
 #featured-post .post-image {
     min-height: 350px;
