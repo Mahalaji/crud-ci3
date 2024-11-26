@@ -15,7 +15,7 @@ h1{
 .form1{
     background:rgba(0,0,0,0.6);
     padding: 15px;
-    margin-top:0px;
+    margin-top:200px;
     width: 28%;
     position: absolute;
     left:35%;
@@ -34,13 +34,13 @@ input[type="text"]{
 input[type="submit"]{
     font-size: 20px;
     height: 40px;
-    background-color: #00FF7F;
+    background-color: gainsboro;
 
 }
 
 input[type="submit"]:hover{
     color:white;	
-    background-color: blue;	
+    background-color:gainsboro ;	
 }
 select{
     size:400px;

@@ -43,11 +43,10 @@
                 <a href="#" id="loadMore">Load More</a>
             </section>
             <div class="col-md-3" style=" margin-top: 40px;">
-                <h5><strong>Categories:-</strong></h5>
+                <h5><strong>Blog Categories:-</strong></h5>
                 <h5 class="form-like">
                     <ul class="list">
                         <?php foreach ($sideblogcategory as $row):?>
-                        <h5 class="form-like">
                             <a href="<?= base_url('blogss/'. $row['seo_title'] ); ?>">
                                 <h5 class="card-title"><?= $row['seo_title']; ?></h5>
                             </a>

@@ -18,7 +18,7 @@ body {
 }
 
 .sidebar {
-    width: fit-content;
+    width: 300px;
     background-color: black;
     color: #ecf0f1;
     padding: 20px;

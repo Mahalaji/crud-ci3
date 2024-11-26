@@ -140,6 +140,50 @@ class pages extends CI_Model
         $this->db->where('recycle',1);
         return $this->db->count_all_results('pages'); 
     }
+    public function getFilteredRecyclePages($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('Title', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('gender', $search);
+            $this->db->or_like('description', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $this->db->where('recycle',0);
+        $query = $this->db->get('pages');
+
+        return $query->result();
+    }
+    public function countAllRecyclePages() {
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('pages');
+    }
+    public function countFilteredRecyclePages($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('Title', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('gender', $search);
+            $this->db->or_like('description', $search);
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Date >=', $start_date);
+            $this->db->where('Date <=', $end_date);
+        }
+        $this->db->where('recycle',0);
+        return $this->db->count_all_results('pages'); 
+    }
     }
 
 

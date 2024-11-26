@@ -257,6 +257,47 @@ class news extends CI_Model
         $this->db->where('recycle',0);
         return $this->db->count_all_results('news'); 
     }
+    public function getFilterednewsCategory($start, $length, $search, $order_by, $order_dir,$start_date,$end_date) {
+        
+        if (!empty($search)) {
+            $this->db->group_start(); 
+            $this->db->like('seo_title', $search);
+            $this->db->or_like('meta_keyword', $search);
+            $this->db->or_like('seo_robat', $search);
+            $this->db->or_like('meta_description', $search);
+            $this->db->group_end(); 
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+     
+        if (!empty($order_by) && !empty($order_dir)) {
+            $this->db->order_by($order_by, $order_dir); 
+        } else {
+            $this->db->order_by('id', 'asc'); 
+        }
+        $this->db->limit($length, $start);
+        $query = $this->db->get('newscategory');
+
+        return $query->result();
+    }
+    public function countAllnewsCategory() {
+        return $this->db->count_all_results('newscategory');
+    }
+    public function countFilterednewsCategory($search, $start_date = null, $end_date = null) {
+        if (!empty($search)) {
+            $this->db->like('seo_title', $search);
+            $this->db->or_like('meta_keyword', $search);
+            $this->db->or_like('seo_robat', $search);
+            $this->db->or_like('meta_description', $search);;
+        }
+        if (!empty($start_date) && !empty($end_date)) {
+            $this->db->where('Create_Date >=', $start_date);
+            $this->db->where('Create_Date <=', $end_date);
+        }
+        return $this->db->count_all_results('newscategory'); 
+    }
 }
 
 ?>

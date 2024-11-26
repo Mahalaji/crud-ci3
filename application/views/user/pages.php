@@ -12,18 +12,10 @@
                         <a href="<?php echo base_url(''); ?>"><i class='fas fa-eye' style='font-size:36px'></i></a> -->
 
                 <form align="right" method="post">
-                    <a href="<?php echo base_url('pagesadd'); ?>" style="    padding: 3px;
-                                       background: azure;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid black;">Add-Pages</a>
+                    <a href="<?php echo base_url('pagesadd'); ?>"style="padding: 10px; background: azure; text-decoration: none; color: black; border-radius: 5px; font-size: 14px; border: 1px solid black;">Add-Pages</a>
 
                     <form align="right" method="post">
-                        <a href="<?php echo base_url('recyclepages'); ?>" style="    padding: 3px;
-                                       background: azure;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid black;">Recycle</a>
+                        <a href="<?php echo base_url('recyclepages'); ?>"style="padding: 10px; background: azure; text-decoration: none; color: black; border-radius: 5px; font-size: 14px; border: 1px solid black;">Recycle</a>
             </h1>
             <div class="filter-container">
                 <h4>Filter</h4>
@@ -112,7 +104,8 @@ $(document).ready(function() {
         "info": true
     });
 
-    $('#filterButton').on('click', function() {
+    $('#filterButton').on('click', function(e) {
+        e.preventDefault();  
         table.ajax.reload();
     });
 });

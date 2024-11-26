@@ -10,10 +10,11 @@
 
 <body>
 	<div class="main">
-		<h1>User Login </h1>
+	<!-- <div id="img"><img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp" height="50">
+     </div> -->
 		
 		<div class="form1">
-		
+		<img src="https://www.absglobaltravel.com/public/images/footer-abs-logo.webp" height="100">
 			
 			<form name="simple" method="POST" action="<?php echo base_url('get') ?>">
 			<div class="styl">	Email <br><input type="text" id="req1" name="email" placeholder="Enter email">

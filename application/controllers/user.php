@@ -149,9 +149,9 @@ class User extends CI_Controller {
 				htmlspecialchars($user->name),
 				htmlspecialchars($user->email),
 				htmlspecialchars($user->gender),
-                "<a href='". base_url('usereditdata/' . $user->id)."'><i class='fas fa-edit' style='font-size:24px'></i></a>",
-                "<a href='". base_url('userdeletedata/' . $user->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:24px'></i></a>",
-                "<a href='". base_url('userpass/' . $user->id)."'><i class='fas fa-lock' style='font-size:24px'></i></a>"
+                "<a href='". base_url('usereditdata/' . $user->id)."'><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>",
+                "<a href='". base_url('userdeletedata/' . $user->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:24px;color:black'></i></a>",
+                "<a href='". base_url('userpass/' . $user->id)."'><i class='fas fa-lock' style='font-size:24px;color:black'></i></a>"
               
 			];
 		}
@@ -312,52 +312,51 @@ class User extends CI_Controller {
         $this->load->view('user/blog');
     }
     public function getBlogData() {
-		$this->load->model('user/Blogdata');
-		
-		
-		$search = $this->input->post('search')['value'];
-		$start = $this->input->post('start');
-		$length = $this->input->post('length');
-		$draw = $this->input->post('draw');
-		$start_date = $this->input->post('start_date');
-		$end_date = $this->input->post('end_date');
-		
-		$order_column = $_POST['order'][0]['column']; 
-		$order_dir = $_POST['order'][0]['dir']; 
-		
-		
-		$columns = ['id','Name', 'Title', 'blog_title_category','Description', 'Create_Date', 'Update_Date']; 
-		$order_by = $columns[$order_column]; 
-	
-		
-		$blogs = $this->Blogdata->getFilteredBlogs($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
-		$totalRecords = $this->Blogdata->countAllBlogs();
-		$filteredRecords = $this->Blogdata->countFilteredBlogs($search, $start_date, $end_date);
-	
-		$counter = $start + 1;
-		$data = [];
-		foreach ($blogs as $blog) {
-			$data[] = [
-				$counter++,
-				htmlspecialchars($blog->Name),
-				htmlspecialchars($blog->Title),
-				htmlspecialchars($blog->blog_title_category),
-                htmlspecialchars($blog->Description),
-				htmlspecialchars($blog->Create_Date),
-				htmlspecialchars($blog->Update_Date),
-               "<a href='" . base_url('blogrecycledata/' . $blog->id) . "'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
-                "<a href='". base_url('blogeditdata/' . $blog->id) . "' ><i class='fas fa-edit' style='font-size:24px'></i></a>"
-			];
-		}
-		$response = [
-			"draw" => intval($draw),
-			"recordsTotal" => $totalRecords,
-			"recordsFiltered" => $filteredRecords,
-			"data" => $data
-		];
-		echo json_encode($response);
-	}
+        $this->load->model('user/Blogdata');
+        
+        $search = $this->input->post('search')['value'];
+        $start = $this->input->post('start');
+        $length = $this->input->post('length');
+        $draw = $this->input->post('draw');
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        
+        // Debugging: Check received start and end dates
+        log_message('debug', 'Start Date: ' . $start_date . ' End Date: ' . $end_date);
+        
+        $order_column = $_POST['order'][0]['column']; 
+        $order_dir = $_POST['order'][0]['dir']; 
+        
+        $columns = ['id', 'Name', 'Title', 'blog_title_category', 'Description', 'Create_Date', 'Update_Date']; 
+        $order_by = $columns[$order_column]; 
+        
+        $blogs = $this->Blogdata->getFilteredBlogs($start, $length, $search, $order_by, $order_dir, $start_date, $end_date);
+        $totalRecords = $this->Blogdata->countAllBlogs();
+        $filteredRecords = $this->Blogdata->countFilteredBlogs($search, $start_date, $end_date);
     
+        $counter = $start + 1;
+        $data = [];
+        foreach ($blogs as $blog) {
+            $data[] = [
+                $counter++,
+                htmlspecialchars($blog->Name),
+                htmlspecialchars($blog->Title),
+                htmlspecialchars($blog->blog_title_category),
+                htmlspecialchars($blog->Description),
+                htmlspecialchars($blog->Create_Date),
+                htmlspecialchars($blog->Update_Date),
+                "<a href='" . base_url('blogrecycledata/' . $blog->id) . "' onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:24px;color:black'></i></a>",
+                "<a href='". base_url('blogeditdata/' . $blog->id) . "' ><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>"
+            ];
+        }
+        $response = [
+            "draw" => intval($draw),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => $filteredRecords,
+            "data" => $data
+        ];
+        echo json_encode($response);
+    }
     public function blogadd() {
         $this->check_login();
         $this->load->model('user/Blogdata');
@@ -470,8 +469,8 @@ class User extends CI_Controller {
                 htmlspecialchars($blog->Description),
 				htmlspecialchars($blog->Create_Date),
 				htmlspecialchars($blog->Update_Date),
-                "<a href='". base_url('blogdelete/' . $blog->id) ."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
-                "<a href='". base_url('blogrestore/' . $blog->id)."'><i class='fa fa-download' style='font-size:25px'></i></a>"
+                "<a href='". base_url('blogdelete/' . $blog->id) ."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px;color:black'></i></a>",
+                "<a href='". base_url('blogrestore/' . $blog->id)."'><i class='fa fa-download' style='font-size:25px;color:black'></i></a>"
             
 			];
 		}
@@ -720,8 +719,8 @@ class User extends CI_Controller {
 				htmlspecialchars($news->news_title_category),
                 htmlspecialchars($news->Description),
 				htmlspecialchars($news->Date),
-             "<a href='". base_url('newsrecycledata/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px'></i></a>",
-              "<a href='". base_url('newseditdata/' . $news->id)."'><i class='fas fa-edit' style='font-size:24px'></i></a>"
+             "<a href='". base_url('newsrecycledata/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash' style='font-size:20px;color:black'></i></a>",
+              "<a href='". base_url('newseditdata/' . $news->id)."'><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>"
              
 			];
 		}
@@ -947,8 +946,8 @@ public function newsrecycledata($u) {
 				htmlspecialchars($news->news_title_category),
                 htmlspecialchars($news->Description),
 				htmlspecialchars($news->Date),
-               "<a href='". base_url('newsdelete/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px'></i></a>",
-                 "<a href='". base_url('newsrestore/' . $news->id)."'><i class='fa fa-download' style='font-size:25px'></i></a>"
+               "<a href='". base_url('newsdelete/' . $news->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px;color:black'></i></a>",
+                 "<a href='". base_url('newsrestore/' . $news->id)."'><i class='fa fa-download' style='font-size:25px;color:black'></i></a>"
             
 			];
 		}
@@ -1012,8 +1011,8 @@ public function newsrecycledata($u) {
                     htmlspecialchars($Page->gender),
                     htmlspecialchars($Page->description),
                     htmlspecialchars($Page->Date),
-                    "<a href='".base_url('pagesrecycledata/' . $Page->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px'></i></a>",
-                    "<a href='". base_url('pageseditdata/' . $Page->id)."'><i class='fas fa-edit'style='font-size:24px'></i></a>"
+                    "<a href='".base_url('pagesrecycledata/' . $Page->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px;color:black'></i></a>",
+                    "<a href='". base_url('pageseditdata/' . $Page->id)."'><i class='fas fa-edit'style='font-size:24px;color:black'></i></a>"
                  
                 ];
             }
@@ -1058,29 +1057,55 @@ public function newsrecycledata($u) {
 
         }
         public function recyclepages(){
+           
+            $this->load->view('user/pagesrecycle');
+        }
+        public function getPageRecycleData() {
             $this->load->model('user/pages');
-            $config2 = [
-                'base_url' => base_url('user/recyclepages'),
-                'per_page' => 4,
-                'total_rows' => $this->pages->countrows(),
-                'use_page_numbers' => TRUE,
-                'num_links' => 2,
-                'full_tag_open' => '<div class="pagination">',
-                'full_tag_close' => '</div>',
-                'first_link' => 'First',
-                'last_link' => 'Last',
-                'next_link' => '&raquo;',
-                'prev_link' => '&laquo;',
+            
+            
+            $search = $this->input->post('search')['value'];
+            $start = $this->input->post('start');
+            $length = $this->input->post('length');
+            $draw = $this->input->post('draw');
+            $start_date = $this->input->post('start_date');
+            $end_date = $this->input->post('end_date');
+            
+            $order_column = $_POST['order'][0]['column']; 
+            $order_dir = $_POST['order'][0]['dir']; 
+            
+            
+            $columns = ['id', 'Title', 'email','gender', 'description', 'Date']; 
+            $order_by = $columns[$order_column]; 
+        
+            
+            $Pages = $this->pages->getFilteredRecyclePages($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+            $totalRecords = $this->pages->countAllRecyclePages();
+            $filteredRecords = $this->pages->countFilteredRecyclePages($search, $start_date, $end_date);
+        
+            $counter = $start + 1;
+            $data = [];
+            foreach ($Pages as $Page) {
+                $data[] = [
+                    $counter++,
+                    htmlspecialchars($Page->Title),
+                    htmlspecialchars($Page->email),
+                    htmlspecialchars($Page->gender),
+                    htmlspecialchars($Page->description),
+                    htmlspecialchars($Page->Date),
+                    "<a href='". base_url('pagesdelete/' . $Page->id)."'onclick='return confirm(\"Are you sure you want to delete this blog?\")'><i class='fas fa-trash'style='font-size:20px;color:black'></i></a>",
+                    "<a href='". base_url('pagesrestore/' . $Page->id)."'><i class='fa fa-download' style='font-size:25px;color:black'></i></a>"
+                    
+                 
+                ];
+            }
+            $response = [
+                "draw" => intval($draw),
+                "recordsTotal" => $totalRecords,
+                "recordsFiltered" => $filteredRecords,
+                "data" => $data
             ];
-        
-            $this->pagination->initialize($config2);
-        
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
-            $offset = ($page - 1) * $config2['per_page']; 
-        
-            $data['user'] = $this->pages->getpagesrecycledata($config2['per_page'], $offset);
-        
-            $this->load->view('user/pagesrecycle', $data);
+            echo json_encode($response);
         }
         public function pagesrecycledata($u){
             $this->load->model('user/pages'); 
@@ -1183,6 +1208,50 @@ public function category() {
     // Load the view
     $this->load->view('user/blogcategory', $data);
 }
+public function getBlogCategoryData() {
+    $this->load->model('user/Blogdata');
+    
+    
+    $search = $this->input->post('search')['value'];
+    $start = $this->input->post('start');
+    $length = $this->input->post('length');
+    $draw = $this->input->post('draw');
+    $start_date = $this->input->post('start_date');
+    $end_date = $this->input->post('end_date');
+    
+    $order_column = $_POST['order'][0]['column']; 
+    $order_dir = $_POST['order'][0]['dir']; 
+    
+    
+    $columns = ['id','seo_title', 'meta_keyword', 'seo_robat','meta_description']; 
+    $order_by = $columns[$order_column]; 
+
+    
+    $blogcategorys = $this->Blogdata->getFilteredBlogCategory($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+    $totalRecords = $this->Blogdata->countAllBlogCategory();
+    $filteredRecords = $this->Blogdata->countFilteredBlogCategory($search, $start_date, $end_date);
+
+    $counter = $start + 1;
+    $data = [];
+    foreach ($blogcategorys as $blogcategory) {
+        $data[] = [
+            $counter++,
+            htmlspecialchars($blogcategory->seo_title),
+            htmlspecialchars($blogcategory->meta_keyword),
+            htmlspecialchars($blogcategory->seo_robat),
+            htmlspecialchars($blogcategory->meta_description),
+            "<a href='". base_url('blogcategoryeditdata/' . $blogcategory->id)."'><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>",
+            "<a href='". base_url('blogcategorydelete/' . $blogcategory->id)."'onclick='return confirm(\"Are you sure you want to delete this category?\")'><i class='fas fa-trash' style='font-size:24px;color:black'></i></a>"
+        ];
+    }
+    $response = [
+        "draw" => intval($draw),
+        "recordsTotal" => $totalRecords,
+        "recordsFiltered" => $filteredRecords,
+        "data" => $data
+    ];
+    echo json_encode($response);
+}
 public function blogcategoryeditdata($u){
     $this->check_login();
         $this->load->model('user/Blogdata');
@@ -1251,33 +1320,51 @@ public function categoryadd(){
 
 }
 public function newscategory(){
+    $this->load->view('user/newscategory');
+}
+public function getNewsCategoryData() {
     $this->load->model('user/news');
     
-    // Pagination config
-    $config3 = [
-        'base_url' => base_url('user/newscategory'),
-        'per_page' => 4,
-        'total_rows' => $this->news->numcount(),
-        'use_page_numbers' => TRUE,
-        'num_links' => 2,
-        'full_tag_open' => '<div class="pagination">',
-        'full_tag_close' => '</div>',
-        'first_link' => 'First',
-        'last_link' => 'Last',
-        'next_link' => '&raquo;',
-        'prev_link' => '&laquo;',
+    
+    $search = $this->input->post('search')['value'];
+    $start = $this->input->post('start');
+    $length = $this->input->post('length');
+    $draw = $this->input->post('draw');
+    $start_date = $this->input->post('start_date');
+    $end_date = $this->input->post('end_date');
+    
+    $order_column = $_POST['order'][0]['column']; 
+    $order_dir = $_POST['order'][0]['dir']; 
+    
+    
+    $columns = ['id','seo_title', 'meta_keyword', 'seo_robat','meta_description']; 
+    $order_by = $columns[$order_column]; 
+
+    
+    $newscategorys = $this->news->getFilteredNewsCategory($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+    $totalRecords = $this->news->countAllNewsCategory();
+    $filteredRecords = $this->news->countFilteredNewsCategory($search, $start_date, $end_date);
+
+    $counter = $start + 1;
+    $data = [];
+    foreach ($newscategorys as $newscategory) {
+        $data[] = [
+            $counter++,
+            htmlspecialchars($newscategory->seo_title),
+            htmlspecialchars($newscategory->meta_keyword),
+            htmlspecialchars($newscategory->seo_robat),
+            htmlspecialchars($newscategory->meta_description),
+            "<a href='". base_url('newscategoryeditdata/' . $newscategory->id)."'><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>",
+            "<a href='". base_url('newscategorydelete/' . $newscategory->id)."'onclick='return confirm(\"Are you sure you want to delete this category?\")'><i class='fas fa-trash' style='font-size:24px;color:black'></i></a>"
+        ];
+    }
+    $response = [
+        "draw" => intval($draw),
+        "recordsTotal" => $totalRecords,
+        "recordsFiltered" => $filteredRecords,
+        "data" => $data
     ];
-
-    $this->pagination->initialize($config3);
-
-    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1; // Default to page 1 if not set
-
-    $start = ($page - 1) * $config3['per_page'];
-
-    $data['newscategory'] = $this->news->getnewscategorydata($config3['per_page'], $start);
-
-    // Load the view
-    $this->load->view('user/newscategory', $data);
+    echo json_encode($response);
 }
 public function newscategoryadd(){
     $this->load->view('user/newscategoryadd');

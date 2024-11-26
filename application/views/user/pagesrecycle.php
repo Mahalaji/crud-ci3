@@ -11,37 +11,96 @@
                     <h1>Pages-Recycle-List
                     
                     </h1>
-                    <table>
-                        <tr>
+                    <div class="filter-container">
+                <h4>Filter</h4>
+                <div class="filter">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate">
+                    <button id="filterButton">Filter</button>
+                </div>
+            </div>
+            <table id="Pagestable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
                         <th>Title</th>
                         <th>Email</th>
                         <th>Gender</th>
-                            <!-- <th>Image</th> -->
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Delete</th>
-                            <th>Restore</th>
-                            
-                        </tr>
-                    <?php foreach ($user as $u): ?>
-                        <tr>
-                            <td><?php echo $u['Title']; ?></td>
-                            <td><?php echo $u['email']; ?></td>
-                            <td><?php echo $u['gender']; ?></td>
-                            <td><?php echo $u['description']; ?></td>
-                            <td><?php echo $u['Date']; ?></td>
-                            <td><a href="<?php echo base_url('pagesdelete/' . $u['id']); ?>"><i class='fas fa-trash'
-                                            style='font-size:20px'></i></a></td>
-                                <td><a href="<?php echo base_url('pagesrestore/' . $u['id']); ?>"><i
-                                            class='fa fa-download' style='font-size:25px'></i></a></td>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Delete Status</th>
+                        <th>Edit</th>
 
-                        </tr>
-                        <?php endforeach; ?>
-                </table>
-                <div class="pagination-links">
-                    <?php echo $this->pagination->create_links(); ?>
-                </div>
-            </div>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    const table = $('#Pagestable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "<?= base_url('user/getPageRecycleData') ?>",
+            "type": "POST",
+            "data": function(d) {
+                d.start_date = $('#startDate').val();
+                d.end_date = $('#endDate').val();
+            }
+        },
+        "columns": [{
+                "data": 0
+            },
+            {
+                "data": 1
+            },
+            {
+                "data": 2
+            },
+            {
+                "data": 3
+            },
+            {
+                "data": 4,
+                "orderable": false
+            },
+            {
+                "data": 5,
+                "orderable": false
+            },
+            {
+                "data": 6,
+                "orderable": false
+            },
+            {
+                "data": 7,
+                "orderable": false
+            }
+        ],
+        "pageLength": 4,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "order": [
+            [0, 'asc']
+        ],
+        "info": true
+    });
+
+    $('#filterButton').on('click', function(e) {
+        e.preventDefault();  
+        table.ajax.reload();
+    });
+});
+</script>

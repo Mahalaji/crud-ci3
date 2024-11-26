@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar {
-    width: 200px;
+    width: 300px;
     background-color: black;
     color: #ecf0f1;
     padding: 20px;
@@ -331,7 +331,68 @@ tr:nth-child(even) {
     color: white;
     border-color: #3498db;
     }
-
+    .filter-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+    }
+    
+    .filter-container h4 {
+        font-size: 20px;
+        color: black;
+        margin-bottom: 15px;
+    }
+    
+    .filter {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    
+    .filter label {
+        font-size: 16px;
+        color: #333;
+    }
+    
+    .filter input[type="date"] {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        width: 150px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .filter input[type="date"]:focus {
+        border-color: black;
+        outline: none;
+    }
+    
+    .filter button {
+        padding: 8px 16px;
+        background-color: azure;
+        color: black;
+        font-size: 16px;
+        border: none;
+        background: azure;
+         border-radius: 5px;
+        border: 1px solid black;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .filter button:hover {
+        background-color: black;
+    }
+    .dataTables_filter{
+        padding-bottom: 10px;
+        margin-top: 10px;
+        
+    }
 @media (max-width: 768px) {
     .dashboard {
         flex-direction: column;

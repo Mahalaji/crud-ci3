@@ -9,20 +9,12 @@
         <div id="back">
             <h1>News-List
                 <form align="right" method="post">
-                    <a href="<?php echo base_url('blogsite'); ?>"><i class='fas fa-eye' style='font-size:36px'></i></a>
+                    <a href="<?php echo base_url('blogsite'); ?>"><i class='fas fa-eye' style='font-size:18px;color:black'></i></a>
 
                 <form align="right" method="post">
-                    <a href="<?php echo base_url('newsadd'); ?>" style="    padding: 3px;
-                                       background: azure;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid black;">Add-News</a>
+                    <a href="<?php echo base_url('newsadd'); ?>" style="padding: 10px; background: azure; text-decoration: none; color: black; border-radius: 5px; font-size: 14px; border: 1px solid black;">Add-News</a>
                 <form align="right" method="post">
-                    <a href="<?php echo base_url('recyclenews'); ?>" style="    padding: 3px;
-                                       background: azure;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid black;">Recycle</a>
+                    <a href="<?php echo base_url('recyclenews'); ?>" style="padding: 10px; background: azure; text-decoration: none; color: black; border-radius: 5px; font-size: 14px; border: 1px solid black;">Recycle</a>
             </h1>
             <div class="filter-container">
                 <h4>Filter</h4>
@@ -90,9 +82,10 @@
             "info": true
         });
 
-        $('#filterButton').on('click', function () {
-            table.ajax.reload();
-        });
+        $('#filterButton').on('click', function (e) {
+    e.preventDefault();  
+    table.ajax.reload(); 
+});
     });
 </script>
 

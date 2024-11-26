@@ -5,11 +5,7 @@
 <div class="header">
     <h1 id="user">User List
         <form align="right" method="post">
-            <a href="<?php echo base_url('userregister'); ?>" style="    padding: 3px;
-                                       background: grey;
-                                       border-radius: 5px;
-                                     font-size: 23px;
-                                       border: 1px solid grey;">Add</a>
+            <a href="<?php echo base_url('userregister'); ?>"style="padding: 10px; background: azure; text-decoration: none; color: black; border-radius: 5px; font-size: 14px; border: 1px solid black;">Add User</a>
     </h1>
 
     <table id="usertable">

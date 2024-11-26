@@ -57,10 +57,11 @@ nav a:hover {
 
 /* Main content */
 main {
-    padding: 4rem 5%;
-    max-width: 1200px;
+    padding: 4rem 4%;
+    max-width: 1500px;
     margin: 0 auto;
 }
+
 
 h2 {
     font-size: 2.5rem;
@@ -80,49 +81,77 @@ h2 {
     margin-top: 3rem;
 }
 
-h5.form-like {
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+.col-md-3 {
+    margin-top: 40px;
+    padding: 0 30px;
+}
+
+.col-md-3 h5 strong {
+    display: block;
+    font-size: 1.2rem;
+    color: #2c3e50;
     margin-bottom: 15px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    }
-    
- h5.form-like:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Form-like styling for categories */
+h5.form-like {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
 h5.form-like a {
+    display: block;
+    padding: 12px 20px;
     text-decoration: none;
     color: #333;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    }
-    
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 8px; /* Space between links */
+}
+
 h5.form-like a:hover {
-    color: #3498db;
-    }
-    
-    h5.form-like .card-title {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+}
+
+h5.form-like .card-title {
     margin: 0;
-    font-size: 1rem;
-    line-height: 1.4;
-    }
-    .col-md-3 h5 strong {
-        display: block;
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        color: #2c3e50;
-        }
-        
-        .list {
-        list-style-type: none;
-        padding: 0;
-        }
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Styling for individual links */
+h5.form-like a {
+    font-weight: 500;
+    color: #5c6a74; /* Slightly lighter color */
+    background-color: #f4f6f9; /* Soft background */
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+h5.form-like a:hover {
+    background-color: #e1e4e8;
+    transform: translateX(5px);
+}
+
+h5.form-like .card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #34495e;
+}
 /* Article Cards */
 article {
     background-color: #fff;

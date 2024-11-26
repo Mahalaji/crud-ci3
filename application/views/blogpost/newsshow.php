@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="<?php echo base_url('public/blog/newsview.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('public/blog/header.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('public/blog/footer.css'); ?>">
-    
+
 </head>
 
 <body>
-<?php include("header.php"); ?>
+    <?php include("header.php"); ?>
 
     <main>
-        <div class="row" >
+        <div class="row">
             <section id="recent-posts" class="col-md-9">
                 <h2>Recent News</h2>
                 <div class="post-grid">
@@ -31,7 +31,8 @@
                             <img src="uploads/news_images/<?php echo $news['Image'] ?>" style=" height: 14rem;" />
                         </div>
                         <div class="post-content">
-                            <a href="<?php echo base_url('news/') . $news['news_title_category'].'/'.  $news['slug'];?>">
+                            <a
+                                href="<?php echo base_url('news/') . $news['news_title_category'].'/'.  $news['slug'];?>">
                                 <h3><?php  echo $news['Title'];  ?></h3>
                                 <p><?php echo $news['Description']; ?></p>
                             </a>
@@ -41,24 +42,20 @@
 
                 </div>
                 <a href="#" id="loadMore">Load More</a>
-        </section>
-        <div class="col-md-3" style=" margin-top: 40px;">
-        <h5><strong>Categories:-</strong></h5>
-        <h5 class="form-like">
-           
-        <ul class="list">
-            
-                <?php foreach ($sidenewscategory as $row):?>
-                <a href="<?= base_url('newss/'. $row['seo_title'] ); ?>">
-                        <h5 class="card-title"><?= $row['seo_title']; ?></h5>
-                </a>
-                </li>
-                
-                <?php endforeach; ?>
-            </ul>
-            </h5>
-
-        </div>
+            </section>
+            <div class="col-md-3" style=" margin-top: 40px;">
+                <h5><strong>News Categories:-</strong></h5>
+                <h5 class="form-like">
+                    <ul class="list">
+                        <?php foreach ($sidenewscategory as $row):?>
+                        <a href="<?= base_url('newss/'. $row['seo_title'] ); ?>">
+                            <h5 class="card-title"><?= $row['seo_title']; ?></h5>
+                        </a>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </h5>
+            </div>
         </div>
     </main>
     <?php include("footer.php"); ?>

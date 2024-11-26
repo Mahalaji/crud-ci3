@@ -96,8 +96,9 @@ $(document).ready(function() {
         "info": true
     });
 
-    $('#filterButton').on('click', function() {
-        table.ajax.reload();
-    });
+    $('#filterButton').on('click', function (e) {
+    e.preventDefault();  
+    table.ajax.reload(); 
+});
 });
 </script>

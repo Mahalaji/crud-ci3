@@ -58,7 +58,7 @@
             <header class="top-bar">
                 <div class="search-bar">
                     <input type="text" placeholder="Search...">
-                    <button><i class="fas fa-search"></i></button>
+                    <button><i class="fas fa-search"style="padding-right: 20px;"></i></button>
                 </div>
                 <div class="dropdown">
                     <button class="dropbtn">Account <i class=' fas fa-angle-down'></i></button>
