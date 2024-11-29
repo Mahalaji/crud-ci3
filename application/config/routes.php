@@ -114,8 +114,12 @@ $route['news/(:any)/(:any)'] = 'user/particularnews/$1/$2';
 $route['generate_slug_ajax'] = 'news/generate_slug_ajax';
 $route['blogss/(:any)']= 'user/categoryblog/$1';
 $route['newss/(:any)'] = 'user/newss/$1';
-
-
+$route['company'] = 'user/company';
+$route['companyadd'] = 'user/companyadd';
+$route['addcompany'] = 'user/addcompany';
+$route['companyeditdata/(:num)'] = 'user/companyeditdata/$1';
+$route['editcompany'] = 'user/editcompany';
+$route['Companydelete/(:num)'] = 'user/Companydelete/$1';
 
 
 

@@ -10,6 +10,7 @@ class User extends CI_Controller {
         $this->load->model('user/Userdata');
         $this->load->model('user/news');
         $this->load->model('user/pages');
+    $this->load->model('user/Company');
         $this->load->library('pagination');
     }
     private function check_login()
@@ -1432,6 +1433,113 @@ public function newscategoryedit(){
 
     }
 
+}
+public function company(){
+    $this->load->view('user/company');
+}
+public function getCompanyData() {
+    $this->load->model('user/Company');
+    
+    
+    $search = $this->input->post('search')['value'];
+    $start = $this->input->post('start');
+    $length = $this->input->post('length');
+    $draw = $this->input->post('draw');
+    $start_date = $this->input->post('start_date');
+    $end_date = $this->input->post('end_date');
+    
+    $order_column = $_POST['order'][0]['column']; 
+    $order_dir = $_POST['order'][0]['dir']; 
+
+    $columns = ['id','companyname', 'companytype', 'companyemail']; 
+    $order_by = $columns[$order_column]; 
+
+    
+    $Companies = $this->Company->getFilteredCompany($start, $length, $search, $order_by, $order_dir,$start_date,$end_date);
+    $totalRecords = $this->Company->countAllCompany();
+    $filteredRecords = $this->Company->countFilteredCompany($search, $start_date, $end_date);
+
+    $counter = $start + 1;
+    $data = [];
+    foreach ($Companies as $Company) {
+        $data[] = [
+            $counter++,
+            htmlspecialchars($Company->companyname),
+            htmlspecialchars($Company->companytype),
+            htmlspecialchars($Company->companyemail),
+            "<button class='btn btn-primary view-address-btn' data-company-id='" . $Company->id . "'>View Address</button>",
+            "<a href='". base_url('companyeditdata/' . $Company->id)."'><i class='fas fa-edit' style='font-size:24px;color:black'></i></a>",
+            "<a href='". base_url('Companydelete/' . $Company->id)."'onclick='return confirm(\"Are you sure you want to delete this company?\")'><i class='fas fa-trash' style='font-size:24px;color:black'></i></a>"
+        ];
+    }
+    $response = [
+        "draw" => intval($draw),
+        "recordsTotal" => $totalRecords,
+        "recordsFiltered" => $filteredRecords,
+        "data" => $data
+    ];
+    echo json_encode($response);
+}
+
+public function companyadd(){
+    $this->load->view("user/companyadd");
+}
+public function addcompany(){
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    $this->form_validation->set_rules('companyname', 'companyname', 'required');
+    $this->form_validation->set_rules('companytype', 'companytype', 'required');
+    $this->form_validation->set_rules('companyemail', 'companyemail', 'required');
+    
+
+    $data['companyname'] = $this->input->post('companyname');
+    $data['companytype'] = $this->input->post('companytype');
+    $data['companyemail'] = $this->input->post('companyemail');   
+   
+    if ($this->form_validation->run() == FALSE) {
+           
+        $this->load->view("user/companyadd",$data);
+
+    } else {
+        $this->load->model("user/Company");
+        $this->Company->insertdata($data);
+        redirect('user/company', 'refresh');
+    }
+   
+
+}
+public function companyeditdata($id){
+    $this->load->model('user/Company');
+    $data['user'] = $this->Company->companyeditdata($id);
+    $this->load->view('user/companyedit',$data);
+}
+public function editcompany(){
+    $this->form_validation->set_error_delimiters('<div class="error-message">', '</div>');
+    $this->form_validation->set_rules('companyname', 'companyname', 'required');
+    $this->form_validation->set_rules('companytype', 'companytype', 'required');
+    $this->form_validation->set_rules('companyemail', 'companyemail', 'required');
+
+
+    
+    $data['companyname'] = $this->input->post('companyname');
+    $data['companytype'] = $this->input->post('companytype');
+    $data['companyemail'] = $this->input->post('companyemail');
+    $data['id'] = $this->input->post('id');
+   
+    $id=$data['id'];
+    if ($this->form_validation->run() == FALSE) {
+        $this->load->model('user/Company');
+        $data['user'] = $this->Company->companyeditdata($id);
+        $this->load->view('user/companyedit',$data);
+    } else {
+     $this->load->model('user/Company');
+        $this->Company->editcompany($id, $data);
+        redirect('user/Company', 'refresh');  
+    }
+}
+public function Companydelete($id){
+    $this->load->model('user/Company');
+    $this->Company->Companydelete($id);
+    redirect('user/Company', 'refresh');  
 }
 public function blogsite() {
     $this->load->model('blogpost/Blogview');

@@ -300,11 +300,8 @@ public function getblogdata($limit, $start) {
         }
         return $this->db->count_all_results('blogcategory'); 
     }
+    
 }
-
-
-
-
 
 
 ?>

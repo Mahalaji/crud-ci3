@@ -50,6 +50,8 @@
                     
                     <li><a href="<?php echo base_url('pages'); ?>"><i class="fa fa-copy"></i> Pages</a></li>
                     <li><a href="<?php echo base_url('userdata')?>"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="<?php echo base_url('company')?>"><i class="far fa-address-book"></i> Company Profile</a></li>
+
 
                 </ul>
             </nav>
