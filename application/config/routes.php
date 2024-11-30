@@ -120,6 +120,7 @@ $route['addcompany'] = 'user/addcompany';
 $route['companyeditdata/(:num)'] = 'user/companyeditdata/$1';
 $route['editcompany'] = 'user/editcompany';
 $route['Companydelete/(:num)'] = 'user/Companydelete/$1';
+$route['company/adddata'] = 'user/companyadddata'; 
 
 
 

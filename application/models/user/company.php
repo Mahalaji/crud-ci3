@@ -66,7 +66,20 @@ class Company extends CI_Model
         $this->db->where('id', $id);
         $this->db->delete('companydetails');
     }
-    
+    public function getAddressByCompanyId($company_id) {
+ 
+        $this->db->select('*');
+        $this->db->from('companyaddress');
+        $this->db->where('company_id', $company_id);
+        $query = $this->db->get();
+
+        // Check if data is found
+        if ($query->num_rows() > 0) {
+            return $query->result_array();  // Return data as an array
+        } else {
+            return false;  // No data found
+        }
+    }
 }
 
 
