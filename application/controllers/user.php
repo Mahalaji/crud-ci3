@@ -1490,74 +1490,60 @@ public function getAddressData() {
     }
 }
 public function saveCompanyAddress()
-{
-    log_message('error', 'POST Data: ' . print_r($this->input->post(), true));
+    {
+        // Log the incoming POST data
+        log_message('error', 'POST Data: ' . print_r($this->input->post(), true));
 
-    // Get POST data
-    $ids = $this->input->post('id');
-    $addresses = $this->input->post('address');
-    $latitudes = $this->input->post('latitude');
-    $longitudes = $this->input->post('longitude');
-    $mobiles = $this->input->post('mobile');
+        // Extract POST data
+        $company_id = $this->input->post('company_id');
+        $ids = $this->input->post('id');
+        $addresses = $this->input->post('address');
+        $latitudes = $this->input->post('latitude');
+        $longitudes = $this->input->post('longitude');
+        $mobiles = $this->input->post('mobile');
 
-    // Validate the data before proceeding
-    if (empty($addresses) || empty($latitudes) || empty($longitudes) || empty($mobiles)) {
-        echo json_encode(['status' => 'error', 'message' => 'Missing required fields in POST data']);
-        return;
-    }
-
-    // Prepare data for insert or update
-    $data = [];
-    for ($i = 0; $i < count($addresses); $i++) {
-        $data[] = [
-            'id' => $ids[$i],  // Assuming 'id' is unique
-            'address' => $addresses[$i],
-            'latitude' => $latitudes[$i],
-            'longitude' => $longitudes[$i],
-            'mobile' => $mobiles[$i]
-        ];
-    }
-
-    try {
-        // Process each row
-        foreach ($data as $row) {
-            if (empty($row['address']) || empty($row['mobile']) || empty($row['latitude']) || empty($row['longitude'])) {
-                log_message('error', 'Missing required fields: ' . print_r($row, true));
-                echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
-                return;
-            }
-
-            // Check if the address already exists
-            $this->db->where('id', $row['id']);
-            $existing_row = $this->db->get('companyaddress')->row();
-
-            if ($existing_row) {
-                // Update existing row
-                $this->db->where('id', $row['id']);
-                if (!$this->db->update('companyaddress', $row)) {
-                    log_message('error', 'Database update error: ' . print_r($this->db->error(), true));
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to update the address data.']);
-                    return;
-                }
-            } else {
-                // Insert new row (do not include id if it's auto-increment)
-                unset($row['id']);  // Remove the 'id' field if it's auto-incremented
-                if (!$this->db->insert('companyaddress', $row)) {
-                    log_message('error', 'Database insert error: ' . print_r($this->db->error(), true));
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to insert the address data.']);
-                    return;
-                }
-            }
+        // Prepare data array
+        $data = [];
+        for ($i = 0; $i < count($addresses); $i++) {
+            $data[] = [
+                'id' => $ids[$i],
+                'company_id' => $company_id,
+                'address' => $addresses[$i],
+                'latitude' => $latitudes[$i],
+                'longitude' => $longitudes[$i],
+                'mobile' => $mobiles[$i],
+            ];
         }
 
-        // Log success
-        echo json_encode(['status' => 'success', 'message' => 'Data saved successfully']);
+        // Call the model to save the data
+        try {
+            $result = $this->Company->saveAddresses($data);
+
+            if ($result) {
+                echo json_encode(['status' => 'success', 'message' => 'Data saved successfully']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to save data.']);
+            }
+        } catch (Exception $e) {
+            log_message('error', 'Error saving company address: ' . $e->getMessage());
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save data.']);
+        }
+    }
+public function deleteCompanyAddress()
+{
+    $address_id = $this->input->post('address_id');
+   
+    try {
+        // Delete the address by ID
+        $this->db->where('id', $address_id);
+        $this->db->delete('companyaddress');
+
+        echo json_encode(['status' => 'success', 'message' => 'Address deleted successfully']);
     } catch (Exception $e) {
-        log_message('error', 'Error saving company address: ' . $e->getMessage());
-        echo json_encode(['status' => 'error', 'message' => 'Failed to save data.']);
+        log_message('error', 'Error deleting company address: ' . $e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'Failed to delete address.']);
     }
 }
-
 
 public function companyadd(){
     $this->load->view("user/companyadd");

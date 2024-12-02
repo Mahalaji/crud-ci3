@@ -80,6 +80,22 @@ class Company extends CI_Model
             return false;  // No data found
         }
     }
+    public function saveAddresses($data){
+        foreach ($data as $row) {
+            if (!empty($row['id'])) {
+                
+                $this->db->where('id', $row['id']);
+                $this->db->update('companyaddress', $row);
+            } else {
+                
+                unset($row['id']); 
+                $this->db->insert('companyaddress', $row);
+            }
+        }
+
+        return true; 
+    }
+    
 }
 
 
